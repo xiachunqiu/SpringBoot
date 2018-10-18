@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF" monitorInterval="600">
+    <Properties>
+        <Property name="LOG_HOME">logs</Property>
+        <property name="FILE_NAME">springboot</property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %m%n"/>
+        </Console>
+        <RollingRandomAccessFile name="INFO" fileName="logs/${FILE_NAME}.log" filePattern="log/${FILE_NAME}_%d{yyyy-MM-dd}_%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="24"/>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="ERROR" fileName="logs/${FILE_NAME}-ERROR.log" filePattern="log/${FILE_NAME}-ERROR_%d{yyyy-MM-dd}_%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="FATAL" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="24"/>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="FATAL" fileName="logs/${FILE_NAME}-FATAL.log" filePattern="log/${FILE_NAME}-FATAL%d{yyyy-MM-dd}_%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="FATAL" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="24"/>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="ALL" fileName="logs/${FILE_NAME}.log" filePattern="log/${FILE_NAME}-ALL%d{yyyy-MM-dd}_%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="24"/>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <Async name="Async">
+            <AppenderRef ref="ALL"/>
+            <Appender-Ref ref="Console"/>
+            <Appender-Ref ref="INFO"/>
+            <Appender-Ref ref="ERROR"/>
+            <Appender-Ref ref="FATAL"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.hibernate" level="warn" additivity="false"/>
+        <Logger name="com.googlecode.hibernate" level="warn" additivity="false"/>
+        <Logger name="org.springframework.transaction" level="debug" additivity="true"/>
+        <Logger name="org.springframework.orm" level="info" additivity="true"/>
+        <Logger name="org.springframework.context.support" level="error" additivity="true"/>
+        <Logger name="com.alibaba.druid" level="info" additivity="true"/>
+        <Logger name="org.springframework.web" level="error" additivity="true"/>
+        <Logger name="org.springframework.boot.web" level="error" additivity="true"/>
+        <Logger name="org.apache.zookeeper.ZooKeeper" level="error" additivity="true"/>
+        <Logger name="org.springframework.context" level="error" additivity="true"/>
+        <Logger name="org.springframework.beans" level="error" additivity="true"/>
+        <Logger name="org.springframework.jmx" level="error" additivity="true"/>
+        <Logger name="org.springframework.orm.jpa" level="error" additivity="true"/>
+        <Logger name="org.apache.catalina.core.AprLifecycleListener" level="error" additivity="true"/>
+        <Logger name="org.springframework.orm.jpa.JpaTransactionManager" level="error" additivity="true"/>
+        <Logger name="org.springframework.boot" level="error" additivity="true"/>
+        <Root level="INFO">
+            <Appender-Ref ref="Console"/>
+            <Appender-Ref ref="ALL"/>
+        </Root>
+    </Loggers>
+</Configuration>

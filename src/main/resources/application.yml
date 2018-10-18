@@ -1,0 +1,17 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/test
+    username: root
+    password: fauingh
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: false
