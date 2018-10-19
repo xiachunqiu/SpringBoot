@@ -1,0 +1,28 @@
+package com.x.y.service;
+
+import com.x.y.domain.User;
+import com.x.y.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User findUserByName(String name) {
+        return userRepository.findUserByName(name);
+    }
+
+    @Transactional
+    public void addUser(User user) {
+        userRepository.save(user);
+        System.out.println(1);
+    }
+}
