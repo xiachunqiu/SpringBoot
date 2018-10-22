@@ -54,4 +54,27 @@ public final class StringUtils {
             }
         }
     }
+
+    public static String replace(String s, String sub, String with) {
+        int c = 0;
+        int i = s.indexOf(sub, c);
+        if (i == -1) {
+            return s;
+        } else {
+            int length = s.length();
+            StringBuilder sb = new StringBuilder(length + with.length());
+
+            do {
+                sb.append(s, c, i);
+                sb.append(with);
+                c = i + sub.length();
+            } while ((i = s.indexOf(sub, c)) != -1);
+
+            if (c < length) {
+                sb.append(s, c, length);
+            }
+
+            return sb.toString();
+        }
+    }
 }
