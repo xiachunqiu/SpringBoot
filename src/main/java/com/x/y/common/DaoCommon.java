@@ -3,7 +3,9 @@ package com.x.y.common;
 
 import com.x.y.dto.Pager;
 import com.x.y.utils.StringUtils;
+
 import javax.persistence.Query;
+
 import org.springframework.dao.DataAccessException;
 
 import javax.persistence.Transient;
@@ -195,7 +197,7 @@ public final class DaoCommon {
         }
     }
 
-    private static void setQueryValueForStringSearch(Query query, Object object) {
+    public static void setQueryValueForStringSearch(Query query, Object object) {
         try {
             packageRelevanceClassValueForStringSearch(query, object, "");
         } catch (Exception var3) {

@@ -76,7 +76,7 @@ public class CommonRepository {
             queryBuffer.append(" ").append(sqlString);
         }
         Query query = entityManager.createQuery(queryBuffer.toString());
-        DaoCommon.setQueryValueForAccurateSearch(query, object);
+        DaoCommon.setQueryValueForStringSearch(query, object);
         DaoCommon.setQueryPager(query, pager);
         return query.getResultList();
     }
