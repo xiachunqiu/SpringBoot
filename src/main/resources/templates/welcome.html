@@ -2,9 +2,235 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Title</title>
+    <title>山色吃玉卷</title>
 </head>
 <body>
-<h1>1314314141</h1>
+<label>总计消耗<span id="spend">0</span>祈玉</label>
+<br><br>
+<label>石青:<span id="stoneGreen">0</span></label>
+<label>石绿:<span id="greenGreen">0</span></label>
+<label>赭石:<span id="ochre">0</span></label>
+<label>泥金:<span id="mud">0</span></label>
+<br><br>
+<label>丹青石:<span id="redStone">0</span></label>
+<br><br>
+<label><span id="des" style="color: red">修复卷·一需要染料[石青-17,石绿-21,赭石-17,泥金-18]</span></label>
+<br><br>
+<label onclick="select()"><input name="rule" type="radio" value="0" checked/>随机染料</label>
+<label onclick="select()"><input name="rule" type="radio" value="1"/>石青</label>
+<label onclick="select()"><input name="rule" type="radio" value="2"/>石绿</label>
+<label onclick="select()"><input name="rule" type="radio" value="3"/>赭石</label>
+<label onclick="select()"><input name="rule" type="radio" value="4"/>泥金</label>
+<br><br>
+<input type="button" id="once" value="开启1次(40玉)" onclick="go(1)" style="width: 120px">
+<input type="button" id="manyTimes" value="开启10次(360玉)" onclick="go(10)" style="width: 120px">
+<br><br>
+<input type="button" id="fuseFourStars" value="兑换4星套装" onclick="exchange(4)" style="width: 120px">
+<input type="button" id="fuseFiveStars" value="兑换5星套装" onclick="exchange(7)" style="width: 120px">
+<br><br>
+<label>4星套装进度:<span id="fourStars" style="color: red">0/7</span></label>
+<br><br>
+<label>5星套装进度:<span id="fiveStars" style="color: red">0/7</span></label>
+<br><br>
+<label><span id="status" style="color: red"></span></label>
+<br><br>
+©  2018  Power by 云裳羽衣-醉花阴-雨舒
+<script>
+    var spend = 0;
+    var oncePrice = 40;
+    var manyTimesPrice = 360;
+    var selectValue = "0";
+    var stoneGreen = 0;
+    var greenGreen = 0;
+    var ochre = 0;
+    var mud = 0;
+    var dyestuffs = ["stoneGreen", "greenGreen", "ochre", "mud"];
+    var progress = 0;
+    var redStone = 0;
+    var fourStars = 0;
+    var fiveStars = 0;
+    // 染料规则:360玉-随机5染料,405玉指定染料5
+    function go(times) {
+        if (times === 1) {
+            spend += oncePrice;
+        } else {
+            spend += manyTimesPrice;
+        }
+        document.getElementById("spend").innerText = spend;
+        if (selectValue === "0") {
+            for (var i = 0; i < times; i++) {
+                for (var j = 0; j < 5; j++) {
+                    var dyestuff = dyestuffs[random(0, 4)];
+                    if (dyestuff === "stoneGreen") {
+                        stoneGreen += 1;
+                    } else if (dyestuff === "greenGreen") {
+                        greenGreen += 1;
+                    } else if (dyestuff === "ochre") {
+                        ochre += 1;
+                    } else if (dyestuff === "mud") {
+                        mud += 1;
+                    }
+                }
+            }
+        } else if (selectValue === "1") {
+            stoneGreen += (5 * times);
+        } else if (selectValue === "2") {
+            greenGreen += (5 * times);
+        } else if (selectValue === "3") {
+            ochre += (5 * times);
+        } else if (selectValue === "4") {
+            mud += (5 * times);
+        }
+        if (progress === 0 && stoneGreen >= 17 && greenGreen >= 21 && ochre >= 17 && mud >= 18) {
+            // 修复卷·一需要染料[石青-17,石绿-21,赭石-17,泥金-18]
+            stoneGreen -= 17;
+            greenGreen -= 21;
+            ochre -= 17;
+            mud -= 18;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·二需要染料[石青-21,石绿-29,赭石-25,泥金-21]";
+            document.getElementById("status").innerText = "卷·一修复完成";
+        } else if (progress === 1 && stoneGreen >= 21 && greenGreen >= 29 && ochre >= 25 && mud >= 21) {
+            // 修复卷·二需要染料[石青-21,石绿-29,赭石-25,泥金-21]
+            stoneGreen -= 21;
+            greenGreen -= 29;
+            ochre -= 25;
+            mud -= 21;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·三需要染料[石青-25,石绿-30,赭石-30,泥金-29]";
+            document.getElementById("status").innerText = "卷·二修复完成";
+        } else if (progress === 2 && stoneGreen >= 25 && greenGreen >= 30 && ochre >= 30 && mud >= 29) {
+            // 修复卷·三需要染料[石青-25,石绿-30,赭石-30,泥金-29]
+            stoneGreen -= 25;
+            greenGreen -= 30;
+            ochre -= 30;
+            mud -= 29;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·四需要染料[石青-39,石绿-38,赭石-38,泥金-32]";
+            document.getElementById("status").innerText = "卷·三修复完成";
+        } else if (progress === 3 && stoneGreen >= 39 && greenGreen >= 38 && ochre >= 38 && mud >= 32) {
+            // 修复卷·四需要染料[石青-39,石绿-38,赭石-38,泥金-32]
+            stoneGreen -= 39;
+            greenGreen -= 38;
+            ochre -= 38;
+            mud -= 32;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·五需要染料[石青-50,石绿-46,赭石-50,泥金-43]";
+            document.getElementById("status").innerText = "卷·四修复完成";
+        } else if (progress === 4 && stoneGreen >= 50 && greenGreen >= 46 && ochre >= 50 && mud >= 43) {
+            // 修复卷·五需要染料[石青-50,石绿-46,赭石-50,泥金-43]
+            stoneGreen -= 50;
+            greenGreen -= 46;
+            ochre -= 50;
+            mud -= 43;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·六需要染料[石青-60,石绿-55,赭石-54,泥金-65]";
+            document.getElementById("status").innerText = "卷·五修复完成";
+        } else if (progress === 5 && stoneGreen >= 60 && greenGreen >= 55 && ochre >= 54 && mud >= 65) {
+            // 修复卷·六需要染料[石青-60,石绿-55,赭石-54,泥金-65]
+            stoneGreen -= 60;
+            greenGreen -= 55;
+            ochre -= 54;
+            mud -= 65;
+            progress++;
+            document.getElementById("des").innerText = "修复卷·七需要染料[石青-65,石绿-58,赭石-63,泥金-69]";
+            document.getElementById("status").innerText = "卷·六修复完成";
+        } else if (progress === 6 && stoneGreen >= 65 && greenGreen >= 58 && ochre >= 63 && mud >= 69) {
+            // 修复卷·七需要染料[石青-65,石绿-58,赭石-63,泥金-69]
+            stoneGreen -= 65;
+            greenGreen -= 58;
+            ochre -= 63;
+            mud -= 69;
+            progress++;
+            document.getElementById("des").innerText = "恭喜山色吃玉卷修复完成~剩余染料将会自动合成丹青石";
+            fuse();
+            document.getElementById("status").innerText = "山色吃玉卷修复完成";
+        } else if (progress === 7) {
+            fuse();
+        }
+        document.getElementById("stoneGreen").innerText = stoneGreen;
+        document.getElementById("greenGreen").innerText = greenGreen;
+        document.getElementById("ochre").innerText = ochre;
+        document.getElementById("mud").innerText = mud;
+    }
+
+    function exchange(stars) {
+        if (stars === 4) {
+            // 更多画卷4星套[丹青石-28:石青-56,石绿-56,赭石-56,泥金-56]
+            if (fourStars === 7) {
+                alert("4星套装已收集完成~无法继续兑换哦");
+            } else {
+                if (redStone >= stars) {
+                    redStone -= stars;
+                    fourStars++;
+                    document.getElementById("fourStars").innerText = fourStars + "/7";
+                    document.getElementById("redStone").innerText = redStone;
+                    if (fourStars === 7) {
+                        document.getElementById("status").innerText = document.getElementById("status").textContent + " 4星套装收集完成";
+                    }
+                } else {
+                    alert("丹青石不足4块~无法兑换4星套装哦");
+                }
+            }
+        } else if (stars === 7) {
+            // 更多画卷5星套[丹青石-49:石青-98,石绿-98,赭石-98,泥金-98]
+            if (fiveStars === 7) {
+                alert("5星套装已收集完成~无法继续兑换哦");
+            } else {
+                if (redStone >= stars) {
+                    redStone -= stars;
+                    fiveStars++;
+                    document.getElementById("fiveStars").innerText = fiveStars + "/7";
+                    document.getElementById("redStone").innerText = redStone;
+                    if (fiveStars === 7) {
+                        document.getElementById("status").innerText = document.getElementById("status").textContent + " 5星套装收集完成";
+                    }
+                } else {
+                    alert("丹青石不足7块~无法兑换5星套装哦");
+                }
+            }
+        }
+    }
+
+    function fuse() {
+        if (stoneGreen >= 2 && greenGreen >= 2 && ochre >= 2 && mud >= 2) {
+            stoneGreen -= 2;
+            greenGreen -= 2;
+            ochre -= 2;
+            mud -= 2;
+            redStone++;
+            document.getElementById("redStone").innerText = redStone;
+            if (stoneGreen >= 2 && greenGreen >= 2 && ochre >= 2 && mud >= 2) {
+                fuse();
+            }
+        }
+    }
+
+    function select() {
+        var rule = document.getElementsByName("rule");
+        for (var i = 0; i < rule.length; i++) {
+            if (rule[i].checked) {
+                selectValue = rule[i].value;
+                break;
+            }
+        }
+        if (selectValue === "0") {
+            document.getElementById("once").value = "开启1次(40玉)";
+            document.getElementById("manyTimes").value = "开启10次(360玉)";
+            oncePrice = 40;
+            manyTimesPrice = 360;
+        } else {
+            document.getElementById("once").value = "开启1次(45玉)";
+            document.getElementById("manyTimes").value = "开启10次(405玉)";
+            oncePrice = 45;
+            manyTimesPrice = 405;
+        }
+    }
+
+    function random(n, m) {
+        var w = m - n;
+        return parseInt(Math.random() * w + n, 10);
+    }
+</script>
 </body>
 </html>
