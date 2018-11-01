@@ -2,10 +2,13 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/test
+    url: jdbc:mysql://47.107.132.207:3306/test
     username: root
     password: fauingh
     driver-class-name: com.mysql.jdbc.Driver
+  mvc:
+    favicon:
+      enabled: false
   jpa:
     database: MYSQL
     show-sql: true
@@ -15,3 +18,5 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
+server:
+  port: 80

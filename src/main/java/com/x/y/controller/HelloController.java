@@ -21,7 +21,7 @@ public class HelloController {
         this.commonService = commonService;
     }
 
-    @RequestMapping("/say")
+    @RequestMapping("/hi")
     public String say() {
         return "welcome";
     }
