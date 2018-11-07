@@ -1,8 +1,14 @@
 spring:
   thymeleaf:
     prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
   datasource:
-    url: jdbc:mysql://47.107.132.207:3306/test
+    url: jdbc:mysql://47.107.132.207:3306/test?useSSL=false
     username: root
     password: fauingh
     driver-class-name: com.mysql.jdbc.Driver
@@ -18,5 +24,9 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
 server:
   port: 80

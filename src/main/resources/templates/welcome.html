@@ -16,11 +16,11 @@
 <br><br>
 <label><span id="des" style="color: red">修复卷·一需要染料[石青-17,石绿-21,赭石-17,泥金-18]</span></label>
 <br><br>
-<label onclick="select()"><input name="rule" type="radio" value="0" checked/>随机染料</label>
-<label onclick="select()"><input name="rule" type="radio" value="1"/>石青</label>
-<label onclick="select()"><input name="rule" type="radio" value="2"/>石绿</label>
-<label onclick="select()"><input name="rule" type="radio" value="3"/>赭石</label>
-<label onclick="select()"><input name="rule" type="radio" value="4"/>泥金</label>
+<label onclick="select()"><input name="rule" type="radio" value="0" checked>随机染料</label>
+<label onclick="select()"><input name="rule" type="radio" value="1">石青</label>
+<label onclick="select()"><input name="rule" type="radio" value="2">石绿</label>
+<label onclick="select()"><input name="rule" type="radio" value="3">赭石</label>
+<label onclick="select()"><input name="rule" type="radio" value="4">泥金</label>
 <br><br>
 <input type="button" id="once" value="开启1次(40玉)" onclick="go(1)" style="width: 120px">
 <input type="button" id="manyTimes" value="开启10次(360玉)" onclick="go(10)" style="width: 120px">
@@ -34,7 +34,11 @@
 <br><br>
 <label><span id="status" style="color: red"></span></label>
 <br><br>
-©  2018  Power by 云裳羽衣-醉花阴-雨舒
+<form enctype="multipart/form-data" action="/hello/upload" method="post">
+    <label><input type="file" name="file"><input type="submit" value="上传"></label>
+</form>
+© 2018 Power by 云裳羽衣-醉花阴-雨舒
+<script type='text/javascript' src='http://static-cdn.06care.com/lib/jquery/jquery-2.1.4.min.js'></script>
 <script>
     var spend = 0;
     var oncePrice = 40;
@@ -49,6 +53,7 @@
     var redStone = 0;
     var fourStars = 0;
     var fiveStars = 0;
+
     // 染料规则:360玉-随机5染料,405玉指定染料5
     function go(times) {
         if (times === 1) {

@@ -3,13 +3,11 @@ package com.x.y.repository;
 import com.x.y.common.DaoCommon;
 import com.x.y.dto.Pager;
 import com.x.y.utils.StringUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
@@ -18,22 +16,19 @@ public class CommonRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
-    public void add(Object entity) throws DataAccessException {
+    public void add(Object entity) {
         entityManager.persist(entity);
     }
 
-    @Transactional
-    public void merge(Object entity) throws DataAccessException {
+    public void merge(Object entity) {
         entityManager.merge(entity);
     }
 
-    @Transactional
-    public void delete(Object entity) throws DataAccessException {
+    public void delete(Object entity) {
         entityManager.remove(entity);
     }
 
-    public <T> T findById(Serializable id, Class<T> objectClass) throws DataAccessException {
+    public <T> T findById(Serializable id, Class<T> objectClass) {
         return entityManager.find(objectClass, id);
     }
 
@@ -45,7 +40,7 @@ public class CommonRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> findListByObj(Object object, Pager pager, String sqlString) throws DataAccessException {
+    public <T> List<T> findListByObj(Object object, Pager pager, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
         DaoCommon.setQueryBufferForAccurateSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
@@ -57,7 +52,7 @@ public class CommonRepository {
         return query.getResultList();
     }
 
-    public Integer findCountByObj(Object object, String sqlString) throws DataAccessException {
+    public Integer findCountByObj(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
         DaoCommon.setQueryBufferForAccurateSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
@@ -69,7 +64,7 @@ public class CommonRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> findListForSearch(Object object, Pager pager, String sqlString) throws DataAccessException {
+    public <T> List<T> findListForSearch(Object object, Pager pager, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
         DaoCommon.setQueryBufferForStringSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
@@ -81,7 +76,7 @@ public class CommonRepository {
         return query.getResultList();
     }
 
-    public Integer findCountForSearch(Object object, String sqlString) throws DataAccessException {
+    public Integer findCountForSearch(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
         DaoCommon.setQueryBufferForStringSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
