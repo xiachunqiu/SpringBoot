@@ -4,7 +4,7 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 
-public class NumberToChineseUtils {
+public final class NumberToChineseUtils {
     private static final String[] CN_UPPER_NUMBER = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
     private static final String[] CN_UPPER_MONEY_UNIT = {"分", "角", "元", "拾", "佰", "仟", "万", "拾", "佰", "仟", "亿", "拾", "佰", "仟", "兆", "拾", "佰", "仟"};
     private static final String CN_FULL = "整";
@@ -12,6 +12,9 @@ public class NumberToChineseUtils {
     private static final int MONEY_PRECISION = 2;
     private static final double MONEY_MAX = 99999999999999.99d;
     private static final double MONEY_MIN = -99999999999999.99d;
+
+    private NumberToChineseUtils() {
+    }
 
     public static String convert(double money) {
         Assert.isTrue(money >= MONEY_MIN && money <= MONEY_MAX, "金额无效");
