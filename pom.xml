@@ -22,7 +22,7 @@
         <java.version>1.8</java.version>
     </properties>
     <build>
-        <finalName>springboot-demo</finalName>
+        <finalName>SpringBootDemo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
