@@ -1,77 +1,72 @@
 package com.x.y.controller;
 
+import com.x.y.common.Constants;
 import com.x.y.domain.User;
-import com.x.y.service.CommonService;
+import com.x.y.dto.Pager;
+import com.x.y.dto.PagerRtn;
+import com.x.y.dto.ResponseData;
+import com.x.y.utils.DateUtils;
 import com.x.y.utils.StringUtils;
-import com.x.y.utils.UUIDUtils;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.util.Date;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/hello")
 @Log4j2
-public class HelloController {
-    private final CommonService commonService;
-
-    @Autowired
-    public HelloController(CommonService commonService) {
-        this.commonService = commonService;
-    }
-
+public class HelloController extends BaseController {
     @RequestMapping("/hi")
-    public String say() {
-        return "welcome";
+    public ModelAndView hi() {
+        return new ModelAndView("page/auth/index");
     }
 
-    @RequestMapping("/xiachunqiu")
-    public String xiachunqiu() {
-        return "page/xiachunqiu";
+    @RequestMapping("/user")
+    public ModelAndView user() {
+        return new ModelAndView("page/user/userList");
     }
 
-    @RequestMapping("getUserByName")
-    @ResponseBody
-    public int getUserByName() {
-        User user = new User();
-        return commonService.findCountByObj(user);
-    }
-
-    @RequestMapping("addUser")
-    @ResponseBody
-    public String addUser() {
-        User user = new User();
-        user.setUserName("1");
-        commonService.add(user);
-        log.info("成功");
-        return "成功";
-    }
-
-    @PostMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    @RequestMapping("getUserList")
+    public ResponseData getUserList(User user, @RequestParam(defaultValue = "1", value = "pageNo") Integer pageNo) {
         try {
-            Assert.isTrue(!file.isEmpty(), "请选择上传文件");
-            String fileName = file.getOriginalFilename();
-            String suffix = StringUtils.isNotNull(fileName) ? fileName.substring(fileName.lastIndexOf(".")) : "";
-            String saveFileName = UUIDUtils.getUUID();
-            String path = request.getSession().getServletContext().getRealPath("/upload/");
-            File saveFile = new File(path + saveFileName + suffix);
-            if (!saveFile.getParentFile().exists()) {
-                Assert.isTrue(saveFile.getParentFile().mkdirs(), "创建上传文件夹失败，路径为：" + saveFile.getParentFile().getAbsolutePath());
-                log.info("创建存储的目录为：" + path);
-            }
-            file.transferTo(saveFile);
-            log.info("上传的文件为：" + saveFile.getAbsolutePath());
-            return "成功";
+            int count = super.getCommonService().findCountForSearch(user);
+            Pager pager = new Pager(count, Constants.PAGE_SIZE, pageNo);
+            List<User> list = super.getCommonService().findListForSearch(user, pager);
+            list.forEach(l -> l.setAddDateStr(DateUtils.format(l.getAddDate())));
+            PagerRtn<User> pagerRtn = super.getPagerRtn(list, pager);
+            return ResponseData.okData(pagerRtn);
         } catch (Exception e) {
-            log.error(e);
-            return e.getMessage();
+            log.error(e.getMessage());
+            return ResponseData.fail();
         }
+    }
+
+    @RequestMapping(value = "addUser", method = RequestMethod.POST)
+    public ResponseData addUser(User user) {
+        try {
+            Assert.isTrue(StringUtils.isNotNull(user.getUserName()), "User name cannot be empty");
+            user.setAddDate(new Date());
+            super.getCommonService().add(user);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseData.fail(e.getMessage());
+        }
+        return ResponseData.ok();
+    }
+
+    @RequestMapping(value = "updateUser", method = RequestMethod.POST)
+    public ResponseData updateUser(User user) {
+        try {
+            Assert.isTrue(StringUtils.isNotNull(user.getUserName()), "User name cannot be empty");
+            Assert.isTrue(StringUtils.isNotNull(user.getSex()), "Sex cannot be empty");
+            super.getCommonService().merge(user);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseData.fail(e.getMessage());
+        }
+        return ResponseData.ok();
     }
 }

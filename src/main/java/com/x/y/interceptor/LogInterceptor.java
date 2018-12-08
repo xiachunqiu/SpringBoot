@@ -66,7 +66,7 @@ public class LogInterceptor implements HandlerInterceptor {
         StringBuilder sb = new StringBuilder();
         long time = System.currentTimeMillis() - getBeginTimeLocal();
         if (time >= 0) {
-            sb.append("耗时:").append(time).append("ms").append("  ").append(request.getMethod());
+            sb.append("time:").append(time).append("ms").append("  ").append(request.getMethod());
         }
         sb.append("  ").append(logRequest(request));
         log.info(sb.toString());

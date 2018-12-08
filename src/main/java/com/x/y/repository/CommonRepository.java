@@ -42,48 +42,48 @@ public class CommonRepository {
     @SuppressWarnings("unchecked")
     public <T> List<T> findListByObj(Object object, Pager pager, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
-        DaoCommon.setQueryBufferForAccurateSearch(queryBuffer, object);
-        if (StringUtils.isNotNull(sqlString)) {
-            queryBuffer.append(" ").append(sqlString);
-        }
-        Query query = entityManager.createQuery(queryBuffer.toString());
-        DaoCommon.setQueryValueForAccurateSearch(query, object);
+        Query query = getFindByObjQuery(object, sqlString, queryBuffer);
         DaoCommon.setQueryPager(query, pager);
         return query.getResultList();
     }
 
     public Integer findCountByObj(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
+        Query query = getFindByObjQuery(object, sqlString, queryBuffer);
+        return Integer.parseInt(query.getSingleResult().toString());
+    }
+
+    private Query getFindByObjQuery(Object object, String sqlString, StringBuffer queryBuffer) {
         DaoCommon.setQueryBufferForAccurateSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
             queryBuffer.append(" ").append(sqlString);
         }
         Query query = entityManager.createQuery(queryBuffer.toString());
         DaoCommon.setQueryValueForAccurateSearch(query, object);
-        return Integer.parseInt(query.getSingleResult().toString());
+        return query;
     }
 
     @SuppressWarnings("unchecked")
     public <T> List<T> findListForSearch(Object object, Pager pager, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
-        DaoCommon.setQueryBufferForStringSearch(queryBuffer, object);
-        if (StringUtils.isNotNull(sqlString)) {
-            queryBuffer.append(" ").append(sqlString);
-        }
-        Query query = entityManager.createQuery(queryBuffer.toString());
-        DaoCommon.setQueryValueForStringSearch(query, object);
+        Query query = getFindForSearchQuery(object, sqlString, queryBuffer);
         DaoCommon.setQueryPager(query, pager);
         return query.getResultList();
     }
 
     public Integer findCountForSearch(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
+        Query query = getFindForSearchQuery(object, sqlString, queryBuffer);
+        return Integer.parseInt(query.getSingleResult().toString());
+    }
+
+    private Query getFindForSearchQuery(Object object, String sqlString, StringBuffer queryBuffer) {
         DaoCommon.setQueryBufferForStringSearch(queryBuffer, object);
         if (StringUtils.isNotNull(sqlString)) {
             queryBuffer.append(" ").append(sqlString);
         }
         Query query = entityManager.createQuery(queryBuffer.toString());
-        DaoCommon.setQueryValueForAccurateSearch(query, object);
-        return Integer.parseInt(query.getSingleResult().toString());
+        DaoCommon.setQueryValueForStringSearch(query, object);
+        return query;
     }
 }

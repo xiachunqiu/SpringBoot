@@ -1,0 +1,25 @@
+<div style="overflow-y: auto;overflow-x: hidden" class="layui-anim layui-anim-up">
+    <div style="padding: 5px; overflow-y: auto">
+        <form class="layui-form" id="searchForm">
+            <span class="layui-btn" id="addSpan"><i class="layui-icon">&#xe654;</i>Add</span>
+            <div class="layui-input-inline">
+                <label>
+                    <input type="text" name="userName" placeholder="userName" autocomplete="off" class="layui-input">
+                </label>
+            </div>
+            <input name="pageNo" id="pageNo" type="hidden" value="1">
+            <span class="layui-btn" id="searchFormBtn">search</span>
+            <span class="layui-btn" id="clearFormBtn">clear</span>
+        </form>
+        <table id="dataList" lay-filter="dataList"></table>
+        <div id="pager"></div>
+    </div>
+</div>
+<div id="showDetailDiv" style="margin: 20px;" hidden>
+    <table class="layui-table" id="showDetailTable" width="380px"></table>
+</div>
+<script type="text/html" id="operateTpl">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">detail</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">edit</a>
+</script>
+<script src="/static/js/user/userList.js"></script>

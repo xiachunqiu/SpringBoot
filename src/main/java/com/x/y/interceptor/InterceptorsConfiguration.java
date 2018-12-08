@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorsConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] excludeUrls = {"/favicon.ico", "/**/js/**", "/error"};
+        String[] excludeUrls = {"/static/js/**", "/error", "/page/**"};
         registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**").excludePathPatterns(excludeUrls);
     }
 }

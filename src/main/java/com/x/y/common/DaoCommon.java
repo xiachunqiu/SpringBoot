@@ -70,8 +70,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String fieldName = field.getName();
-                String pfildName = StringUtils.isNull(className) ? fieldName : className + "." + fieldName;
+                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -103,8 +102,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String fieldName = field.getName();
-                String pfildName = StringUtils.isNull(className) ? fieldName : className + "." + fieldName;
+                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -136,8 +134,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String fieldName = field.getName();
-                String pfildName = StringUtils.isNull(className) ? fieldName : className + "." + fieldName;
+                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -232,9 +229,6 @@ public final class DaoCommon {
         if (pager != null) {
             query.setFirstResult(pager.getStartPos());
             query.setMaxResults(pager.getPageSize());
-        } else {
-            query.setFirstResult(0);
-            query.setMaxResults(10);
         }
     }
 }

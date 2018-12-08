@@ -8,13 +8,10 @@ spring:
       content-type: text/html
     cache: false
   datasource:
-    url: jdbc:mysql://47.107.132.207:3306/test?useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/test?useSSL=false
     username: root
-    password: fauingh
+    password: admin
     driver-class-name: com.mysql.jdbc.Driver
-  mvc:
-    favicon:
-      enabled: false
   jpa:
     database: MYSQL
     show-sql: true
@@ -24,9 +21,5 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
-  servlet:
-    multipart:
-      max-request-size: 100MB
-      max-file-size: 100MB
 server:
   port: 80

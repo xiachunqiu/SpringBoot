@@ -13,7 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
-    private Date birthDay;
+    private Date addDate;
     private String sex;
     private String address;
+    @Transient
+    private  String addDateStr;
 }
