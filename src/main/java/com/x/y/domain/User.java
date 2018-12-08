@@ -17,5 +17,5 @@ public class User {
     private String sex;
     private String address;
     @Transient
-    private  String addDateStr;
+    private String addDateStr;
 }

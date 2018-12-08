@@ -57,13 +57,13 @@ Router = function () {
     /* 获取路由中的参数 */
     obj.getParams = function (index, defaultValue) {
         var value = obj.Params[index];
-        if(value){
+        if (value) {
             return value;
         }
 
-       var getAlpacaQuery = function(name) {
+        var getAlpacaQuery = function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r   = obj.QueryString.match(reg);
+            var r = obj.QueryString.match(reg);
             if (r != null) {
                 return (r[2]);
             }
@@ -71,13 +71,13 @@ Router = function () {
         };
 
         value = getAlpacaQuery(index);
-        if(value){
+        if (value) {
             return value;
         }
 
-        var  getQueryStringUrl = function(name) {
+        var getQueryStringUrl = function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-            var r   = window.location.search.substr(1).match(reg);
+            var r = window.location.search.substr(1).match(reg);
             if (r != null) {
                 return (r[2]);
             }
@@ -85,7 +85,7 @@ Router = function () {
         };
 
         value = getQueryStringUrl(index);
-        if(value){
+        if (value) {
             return value;
         }
 
@@ -107,7 +107,7 @@ Router = function () {
 
         /* segments存放分割的路由 */
         var segments = new Array();
-        segments     = inHash.split("/");
+        segments = inHash.split("/");
 
         /* 设置默认模块 */
         if (!segments[3]) {
@@ -132,24 +132,24 @@ Router = function () {
         this.InHash = inHash;
 
         /* 模块Module */
-        this.Module         = segments[1];
-        this.ModuleName     = this.Module + this.ModulePostfix;
-        this.ModuleName     = this.ModuleName.replace(/(\w)/, function (v) {
+        this.Module = segments[1];
+        this.ModuleName = this.Module + this.ModulePostfix;
+        this.ModuleName = this.ModuleName.replace(/(\w)/, function (v) {
             return v.toUpperCase();
         });
         this.ModuleFullName = this.AlpacaName + this.ModuleName;
 
         /* 控制器Controller */
-        this.Controller         = segments[2];
-        this.ControllerName     = this.Controller + this.ControllerPostfix;
-        this.ControllerName     = this.ControllerName.replace(/(\w)/, function (v) {
+        this.Controller = segments[2];
+        this.ControllerName = this.Controller + this.ControllerPostfix;
+        this.ControllerName = this.ControllerName.replace(/(\w)/, function (v) {
             return v.toUpperCase();
         });
         this.ControllerFullName = this.ModuleFullName + "." + this.ControllerName;
 
         /* 动作Action */
-        this.Action         = segments[3];
-        this.ActionName     = this.Action + this.ActionPostfix;
+        this.Action = segments[3];
+        this.ActionName = this.Action + this.ActionPostfix;
         this.ActionFullName = this.ControllerFullName + "." + this.ActionName;
 
         /* 返回结果 */
@@ -159,8 +159,8 @@ Router = function () {
     /* 启动路由 */
     obj.run = function (inHash) {
         /* 解析hash,创建一个路由实例 */
-        var router ={};
-        $.extend(router,this.parser(inHash));
+        var router = {};
+        $.extend(router, this.parser(inHash));
         return router;
     };
 
@@ -462,7 +462,7 @@ ViewModel = function () {
                         view.Children[index].setData(view.ChildData[view.Children[index].Name]);
                     }
                     /* 渲染子视图 */
-                    view.Children[index].router =view.router;
+                    view.Children[index].router = view.router;
                     view.Children[index].render();
                 }
             }
@@ -496,12 +496,12 @@ ViewModel = function () {
                 }
                 /* 合并数据-视图中设置的part数据,将数据放入layout中的ChildData */
                 for (var name in this.PartData) {
-                    var data   = {};
+                    var data = {};
                     data[name] = this.PartData[name];
                     this.Layout.setChildData(data);
                 }
                 /* 渲染layout */
-                this.Layout.router =this.router;
+                this.Layout.router = this.router;
                 this.Layout.render();
             } else {
                 /* 渲染自己 */
@@ -618,7 +618,7 @@ ViewModel = function () {
             }
 
             /* 生成模板路径 */
-            var path           = obj.Alpaca.Config['baseUrl'];
+            var path = obj.Alpaca.Config['baseUrl'];
             path += obj.Alpaca.Router.Module;
             path += "/view/layout/";
             path += option['name'];
@@ -666,7 +666,7 @@ ViewModel = function () {
             }
 
             /* 生成模板路径 */
-            var path           = obj.Alpaca.Config['baseUrl'];
+            var path = obj.Alpaca.Config['baseUrl'];
             path += obj.Alpaca.Router.Module;
             path += "/view/layout/part/";
             path += option['name'];
@@ -737,7 +737,7 @@ ViewModel = function () {
 
     doT.encodeHTMLSource = function (doNotSkipEncoded) {
         var encodeHTMLRules = {"&": "&#38;", "<": "&#60;", ">": "&#62;", '"': "&#34;", "'": "&#39;", "/": "&#47;"},
-            matchHTML       = doNotSkipEncoded ? /[&<>"'\/]/g : /&(?!#?\w+;)|<|>|"|'|\//g;
+            matchHTML = doNotSkipEncoded ? /[&<>"'\/]/g : /&(?!#?\w+;)|<|>|"|'|\//g;
         return function (code) {
             return code ? code.toString().replace(matchHTML, function (m) {
                 return encodeHTMLRules[m] || m;
@@ -763,11 +763,11 @@ ViewModel = function () {
     var startend = {
         append: {start: "'+(", end: ")+'", startencode: "'+encodeHTML("},
         split: {start: "';out+=(", end: ");out+='", startencode: "';out+=encodeHTML("}
-    }, skip      = /$^/;
+    }, skip = /$^/;
 
     function resolveDefs(c, block, def) {
         return ((typeof block === "string") ? block : block.toString())
-            .replace((c.define || c.defineSpa ) || skip, function (m, code, assign, value) {
+            .replace((c.define || c.defineSpa) || skip, function (m, code, assign, value) {
                 if (code.indexOf("def.") === 0) {
                     code = code.substring(4);
                 }
@@ -786,19 +786,19 @@ ViewModel = function () {
                 }
                 return "";
             })
-            .replace((c.use || c.useSpa ) || skip, function (m, code) {
+            .replace((c.use || c.useSpa) || skip, function (m, code) {
                 if (c.useParams) code = code.replace(c.useParams, function (m, s, d, param) {
                     if (def[d] && def[d].arg && param) {
-                        var rw        = (d + ":" + param).replace(/'|\\/g, "_");
-                        def.__exp     = def.__exp || {};
+                        var rw = (d + ":" + param).replace(/'|\\/g, "_");
+                        def.__exp = def.__exp || {};
                         def.__exp[rw] = def[d].text.replace(new RegExp("(^|[^\\w$])" + def[d].arg + "([^\\w$])", "g"), "$1" + param + "$2");
                         return s + "def.__exp['" + rw + "']";
                     }
                 });
                 if (c.useParamsSpa) code = code.replace(c.useParamsSpa, function (m, s, d, param) {
                     if (def[d] && def[d].arg && param) {
-                        var rw        = (d + ":" + param).replace(/'|\\/g, "_");
-                        def.__exp     = def.__exp || {};
+                        var rw = (d + ":" + param).replace(/'|\\/g, "_");
+                        def.__exp = def.__exp || {};
                         def.__exp[rw] = def[d].text.replace(new RegExp("(^|[^\\w$])" + def[d].arg + "([^\\w$])", "g"), "$1" + param + "$2");
                         return s + "def.__exp['" + rw + "']";
                     }
@@ -813,72 +813,72 @@ ViewModel = function () {
     }
 
     doT.template = function (tmpl, c, def) {
-        c                                                                          = c || doT.templateSettings;
+        c = c || doT.templateSettings;
         var cse = c.append ? startend.append : startend.split, needhtmlencode, sid = 0, indv,
-            str                                                                    = ((c.use || c.useSpa) || (c.define || c.defineSpa)) ? resolveDefs(c, tmpl, def || {}) : tmpl;
+            str = ((c.use || c.useSpa) || (c.define || c.defineSpa)) ? resolveDefs(c, tmpl, def || {}) : tmpl;
 
         str = ("var out='" + (c.strip ? str.replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g, " ")
-            .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g, "") : str)
-            .replace(/'|\\/g, "\\$&")
-            .replace(c.interpolate || skip, function (m, code) {
-                return cse.start + unescape(code) + cse.end;
-            })
-            .replace(c.encode || skip, function (m, code) {
-                needhtmlencode = true;
-                return cse.startencode + unescape(code) + cse.end;
-            })
-            .replace(c.conditional || skip, function (m, elsecase, code) {
-                return elsecase ?
-                    (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
-                    (code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
-            })
-            .replace(c.iterate || skip, function (m, iterate, vname, iname) {
-                if (!iterate) return "';} } out+='";
-                sid += 1;
-                indv    = iname || "i" + sid;
-                iterate = unescape(iterate);
-                return "';var arr" + sid + "=" + iterate + ";if(arr" + sid + "){var " + vname + "," + indv + "=-1,l" + sid + "=arr" + sid + ".length-1;while(" + indv + "<l" + sid + "){"
-                    + vname + "=arr" + sid + "[" + indv + "+=1];out+='";
-            })
-            .replace(c.evaluate || skip, function (m, code) {
-                return "';" + unescape(code) + "out+='";
-            })
+                .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g, "") : str)
+                .replace(/'|\\/g, "\\$&")
+                .replace(c.interpolate || skip, function (m, code) {
+                    return cse.start + unescape(code) + cse.end;
+                })
+                .replace(c.encode || skip, function (m, code) {
+                    needhtmlencode = true;
+                    return cse.startencode + unescape(code) + cse.end;
+                })
+                .replace(c.conditional || skip, function (m, elsecase, code) {
+                    return elsecase ?
+                        (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
+                        (code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
+                })
+                .replace(c.iterate || skip, function (m, iterate, vname, iname) {
+                    if (!iterate) return "';} } out+='";
+                    sid += 1;
+                    indv = iname || "i" + sid;
+                    iterate = unescape(iterate);
+                    return "';var arr" + sid + "=" + iterate + ";if(arr" + sid + "){var " + vname + "," + indv + "=-1,l" + sid + "=arr" + sid + ".length-1;while(" + indv + "<l" + sid + "){"
+                        + vname + "=arr" + sid + "[" + indv + "+=1];out+='";
+                })
+                .replace(c.evaluate || skip, function (m, code) {
+                    return "';" + unescape(code) + "out+='";
+                })
 
-            .replace(c.endIterateSpa || skip, function () {
-                return "';} } out+='";
-            })
-            .replace(c.interpolateSpa || skip, function (m, code) {
-                return cse.start + unescape(code) + cse.end;
-            })
-            .replace(c.encodeSpa || skip, function (m, code) {
-                needhtmlencode = true;
-                return cse.startencode + unescape(code) + cse.end;
-            })
-            .replace(c.conditionalSpa || skip, function (m, elsecase, code) {
-                return elsecase ?
-                    (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
-                    (code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
-            })
-            .replace(c.iterateSpa || skip, function (m, iterate, iname, vname) {
-                if (!iterate) return "';} } out+='";
-                sid += 1;
-                indv    = iname || "i" + sid;
-                iterate = unescape(iterate);
-                return "';var arr" + sid + "=" + iterate + ";if(arr" + sid + "){var " + vname + "," + indv + "=-1,l" + sid + "=arr" + sid + ".length-1;while(" + indv + "<l" + sid + "){"
-                    + vname + "=arr" + sid + "[" + indv + "+=1];out+='";
-            })
-            .replace(c.evaluateSpa || skip, function (m, code) {
-                return "';" + unescape(code) + "out+='";
-            })
-            .replace(c.for || skip, function (m, key, iterate) {
-                return "';for(var " + key + " in " + iterate + "){;out+='";
-            })
-            .replace(c.endFor || skip, function () {
-                return "'; } out+='";
-            })
+                .replace(c.endIterateSpa || skip, function () {
+                    return "';} } out+='";
+                })
+                .replace(c.interpolateSpa || skip, function (m, code) {
+                    return cse.start + unescape(code) + cse.end;
+                })
+                .replace(c.encodeSpa || skip, function (m, code) {
+                    needhtmlencode = true;
+                    return cse.startencode + unescape(code) + cse.end;
+                })
+                .replace(c.conditionalSpa || skip, function (m, elsecase, code) {
+                    return elsecase ?
+                        (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='") :
+                        (code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
+                })
+                .replace(c.iterateSpa || skip, function (m, iterate, iname, vname) {
+                    if (!iterate) return "';} } out+='";
+                    sid += 1;
+                    indv = iname || "i" + sid;
+                    iterate = unescape(iterate);
+                    return "';var arr" + sid + "=" + iterate + ";if(arr" + sid + "){var " + vname + "," + indv + "=-1,l" + sid + "=arr" + sid + ".length-1;while(" + indv + "<l" + sid + "){"
+                        + vname + "=arr" + sid + "[" + indv + "+=1];out+='";
+                })
+                .replace(c.evaluateSpa || skip, function (m, code) {
+                    return "';" + unescape(code) + "out+='";
+                })
+                .replace(c.for || skip, function (m, key, iterate) {
+                    return "';for(var " + key + " in " + iterate + "){;out+='";
+                })
+                .replace(c.endFor || skip, function () {
+                    return "'; } out+='";
+                })
 
 
-        + "';return out;")
+            + "';return out;")
             .replace(/\n/g, "\\n").replace(/\t/g, '\\t').replace(/\r/g, "\\r")
             .replace(/(\s|;|\}|^|\{)out\+='';/g, '$1').replace(/\+''/g, "");
 
@@ -936,7 +936,7 @@ Alpaca = function () {
     obj.Router = null;
 
     /* 配置 - 视图 - 创建视图的方法 */
-    obj.ViewModel        = ViewModel;
+    obj.ViewModel = ViewModel;
     obj.ViewModel.Alpaca = obj;
 
     /* 请求参数 */
@@ -975,7 +975,7 @@ Alpaca = function () {
         /* 如果设置了place,则from，to，全部等于place */
         if (option['place']) {
             option['from'] = option['place'];
-            option['to']   = option['place'];
+            option['to'] = option['place'];
         }
 
         /* 创建视图 */
@@ -1020,7 +1020,7 @@ Alpaca = function () {
     obj.to = function (inHash, data) {
 
         /* 开始路由 */
-        this.Router        = this.NewRouter;
+        this.Router = this.NewRouter;
         this.Router.Alpaca = this;
 
         /* 根据hash创建路由对象 */
@@ -1128,7 +1128,7 @@ Alpaca = function () {
          条件2：如果未使用layout，则view的CaptureTo等于DefaultLayoutCaptureTo
          条件2：如果使用了layout，则layout的CaptureTo等于DefaultLayoutCaptureTo
          */
-        var isSetHash = inHash && ( result.CaptureTo == Alpaca.ViewModel.DefaultLayoutCaptureTo || (result.IsUseLayout == true && result.Layout.CaptureTo == Alpaca.ViewModel.DefaultLayoutCaptureTo));
+        var isSetHash = inHash && (result.CaptureTo == Alpaca.ViewModel.DefaultLayoutCaptureTo || (result.IsUseLayout == true && result.Layout.CaptureTo == Alpaca.ViewModel.DefaultLayoutCaptureTo));
         if (isSetHash || this.isChangeHash === true) {
             /* 关闭浏览器内置onHashChange事件 */
             window.onhashchange = null;
