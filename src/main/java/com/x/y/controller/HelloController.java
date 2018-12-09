@@ -10,7 +10,6 @@ import com.x.y.utils.StringUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -19,16 +18,6 @@ import java.util.List;
 @RequestMapping("/hello")
 @Log4j2
 public class HelloController extends BaseController {
-    @RequestMapping("/hi")
-    public ModelAndView hi() {
-        return new ModelAndView("page/auth/index");
-    }
-
-    @RequestMapping("/user")
-    public ModelAndView user() {
-        return new ModelAndView("page/user/userList");
-    }
-
     @RequestMapping("getUserList")
     public ResponseData getUserList(User user, @RequestParam(defaultValue = "1", value = "pageNo") Integer pageNo) {
         try {
