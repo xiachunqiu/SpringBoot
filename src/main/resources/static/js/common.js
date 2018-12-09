@@ -101,3 +101,19 @@ function getJsonFromSessonStorage(key) {
         }
     });
 })(jQuery);
+
+function logout() {
+    layer.confirm('Do you confirm logout?', {
+        btn: ['Yes', 'No']
+    }, function () {
+        clearLoginInfo();
+        window.location.href = "/";
+    }, function (index) {
+    });
+}
+
+function clearLoginInfo() {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("exp");
+    sessionStorage.clear();
+}

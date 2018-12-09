@@ -1,5 +1,6 @@
 package com.x.y.controller;
 
+import com.x.y.domain.User;
 import com.x.y.dto.Pager;
 import com.x.y.dto.PagerRtn;
 import com.x.y.service.CommonService;
@@ -24,5 +25,12 @@ public class BaseController {
         pagerRtn.setList(list);
         pagerRtn.setPager(pager);
         return pagerRtn;
+    }
+
+    User getUserByName(String username) {
+        User user = new User();
+        user.setUserName(username);
+        List<User> userList = commonService.findListByObj(user, new Pager(1, 1,1));
+        return userList.size() > 0 ? userList.get(0) : null;
     }
 }
