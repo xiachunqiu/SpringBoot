@@ -31,10 +31,6 @@ function isEmpty(obj) {
     return Object.prototype.isPrototypeOf(obj) && Object.keys(obj).length === 0;
 }
 
-function getJsonFromSessonStorage(key) {
-    return JSON.parse(sessionStorage.getItem(key));
-}
-
 (function ($) {
     $.fn.extend({
         initForm: function (options) {
@@ -117,3 +113,42 @@ function clearLoginInfo() {
     sessionStorage.removeItem("exp");
     sessionStorage.clear();
 }
+
+let ajaxIndex;
+$.ajaxSetup({
+    beforeSend: function (request) {
+    },
+    complete: function () {
+        layer.close(ajaxIndex);
+    },
+    error: function () {
+        layer.msg("请求失败");
+    },
+    cache: false,
+    dataFilter: function (data, type) {
+        if (type === 'html') {
+            return data;
+        }
+        if (type === "json" || (typeof (type) === "undefined" && typeof (data) !== "undefined" && !data.startWith('<'))) {
+            let jsonData = JSON.parse(data);
+            if (jsonData.code === "900") { //ajax请求，发现session过期，重新刷新页面，跳转到登录页面
+                layer.msg(jsonData.msg);
+                setTimeout(function () {
+                    clearLoginInfo();
+                    window.location.href = "/";
+                }, 2000);
+            } else if (jsonData.code === "1000") {
+                console.log("code is 1000,return data is :" + data);
+                layer.msg(jsonData.msg);
+            }
+        }
+        return data;
+    }, success: function (data, textStatus, xhr) {
+    }
+});
+
+String.prototype.startWith = function (s) {
+    if (s == null || s === "" || this.length === 0 || s.length > this.length)
+        return false;
+    return this.substr(0, s.length) === s;
+};

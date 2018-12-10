@@ -1,5 +1,6 @@
 package com.x.y.controller;
 
+import com.x.y.common.CacheTime;
 import com.x.y.common.Constants;
 import com.x.y.domain.User;
 import com.x.y.dto.ResponseData;
@@ -66,7 +67,7 @@ public class IndexController extends BaseController {
 
     private String getLoginErrorDes(String key, int errorCount) {
         String des = "Username or password incorrect";
-        XMemCachedUtils.set(key, 300, ++errorCount);
+        XMemCachedUtils.set(key, CacheTime.LOGIN_ERROR_LOCK_TIME, ++errorCount);
         int leftCount = 5 - errorCount;
         des += leftCount > 0 ? ",You can also try it" + leftCount + "times and then lock it up for five minutes."
                 : ",Your account is locked, please try again later!";
@@ -80,8 +81,8 @@ public class IndexController extends BaseController {
         if (StringUtils.isNotNull(clientId)) {
             HashMap<String, String> param = getGtHashMap(request, clientId);
             int gtServerStatus = gtSdk.preProcess(param);
-            XMemCachedUtils.set(clientId + gtSdk.gtServerStatusSessionKey, 120, gtServerStatus);
-            XMemCachedUtils.set(clientId, 120, clientId);
+            XMemCachedUtils.set(clientId + gtSdk.gtServerStatusSessionKey, CacheTime.COMMON_CACHE_TIME, gtServerStatus);
+            XMemCachedUtils.set(clientId, CacheTime.COMMON_CACHE_TIME, clientId);
             String resStr = gtSdk.getResponseStr();
             try {
                 PrintWriter out = response.getWriter();

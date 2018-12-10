@@ -59,10 +59,6 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object o, Exception e) {
-        String uri = request.getRequestURI();
-        if ("/index/indexHome".equalsIgnoreCase(uri)) {
-            return;
-        }
         StringBuilder sb = new StringBuilder();
         long time = System.currentTimeMillis() - getBeginTimeLocal();
         if (time >= 0) {

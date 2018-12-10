@@ -49,6 +49,14 @@ public class ResponseData implements Serializable {
         return responseData;
     }
 
+    public static ResponseData fail(String msg, String code) {
+        ResponseData responseData = new ResponseData(null);
+        responseData.setCode(code);
+        responseData.setMsg(msg);
+        responseData.setSuccess(false);
+        return responseData;
+    }
+
     private ResponseData(Object data) {
         super();
         this.setData(data);
