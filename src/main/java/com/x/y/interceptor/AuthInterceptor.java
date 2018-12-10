@@ -44,6 +44,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 print.write(JSON.toJSON(ResponseData.fail("Please login", ResponseCode.not_logged_in)).toString());
                 return false;
             }
+            request.setAttribute("user", user);
             saveLog(request, user, uri);
             return true;
         } catch (Exception e) {
@@ -74,7 +75,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             sysLog.setContent(logRequestParameter(request));
             commonService.add(sysLog);
         } catch (Exception e) {
-            log.error("记录审计日志出错", e);
+            log.error("save log error", e);
         }
     }
 
@@ -94,7 +95,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             sb.append(name).append("=").append(value).append("&");
         }
         String url = request.getRequestURI();
-        Assert.isTrue(request.getHeader("host") != null, "host为null");
+        Assert.isTrue(request.getHeader("host") != null, "host is null");
         return "" + url + sb.toString();
     }
 }

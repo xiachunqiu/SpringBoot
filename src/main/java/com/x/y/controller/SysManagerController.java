@@ -80,8 +80,8 @@ public class SysManagerController extends BaseController {
         try {
             User user = super.getRequestUer(request);
             User dbUser = super.getCommonService().findById(user.getId(), User.class);
-            Assert.isTrue(getPassword(oldPassWord).equalsIgnoreCase(dbUser.getPassword()), "原密码错误");
-            Assert.isTrue(StringUtils.isNotNull(newPassword) && newPassword.length() > 5, "新密码长度最少6位");
+            Assert.isTrue(getPassword(oldPassWord).equalsIgnoreCase(dbUser.getPassword()), "Original password error");
+            Assert.isTrue(StringUtils.isNotNull(newPassword) && newPassword.length() > 5, "Minimum 6 bits of new password length");
             user.setPassword(getPassword(newPassword));
             super.getCommonService().merge(user);
             return ResponseData.ok();

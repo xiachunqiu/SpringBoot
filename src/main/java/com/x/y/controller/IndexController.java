@@ -39,11 +39,11 @@ public class IndexController extends BaseController {
             User user = super.getUserByName(userName);
             Assert.isTrue(user != null && MD5Utils.encryptByMD5(password).equals(user.getPassword()), getLoginErrorDes(key, errorCount));
             request.getSession().setAttribute(Constants.USER_SESSION_KEY, user);
+            return ResponseData.ok(user);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseData.fail(e.getMessage());
         }
-        return ResponseData.ok();
     }
 
     private void validatorCode(HttpServletRequest request) {

@@ -109,14 +109,22 @@ function logout() {
 }
 
 function clearLoginInfo() {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("exp");
+    sessionStorage.removeItem("user");
     sessionStorage.clear();
 }
 
 let ajaxIndex;
 $.ajaxSetup({
-    beforeSend: function (request) {
+    beforeSend: function () {
+        let user = sessionStorage.getItem("user");
+        if (user === "" || user === null) {
+            layer.msg("Your login information is invalid. Please log in again.");
+            setTimeout(function () {
+                clearLoginInfo();
+                window.location.href = "/";
+            }, 2000);
+            return false;
+        }
     },
     complete: function () {
         layer.close(ajaxIndex);

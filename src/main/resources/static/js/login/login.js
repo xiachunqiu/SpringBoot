@@ -31,16 +31,16 @@ layui.use(['element', 'jquery', 'layer', 'form'], function () {
                 let userName = $('#userName').val();
                 let password = $('#password').val();
                 if (userName === '') {
-                    layer.msg("请输入用户名");
+                    layer.msg("Please input a user name");
                     return false;
                 }
                 if (password === '') {
-                    layer.msg("请输入密码");
+                    layer.msg("Please input a password");
                     return false;
                 }
                 let result = captchaObj.getValidate();
                 if (!result) {
-                    layer.msg('请先完成验证');
+                    layer.msg('Please complete validation first');
                     return false;
                 }
                 let index = layer.load(2, {time: 10 * 1000});
@@ -57,6 +57,7 @@ layui.use(['element', 'jquery', 'layer', 'form'], function () {
                 $.post('/index/login', data, function (rtn) {
                     layer.msg(rtn.msg);
                     if (rtn.success) {
+                        sessionStorage.setItem("user", JSON.stringify(rtn.data));
                         window.location = "/page/index.html";
                     }
                 });

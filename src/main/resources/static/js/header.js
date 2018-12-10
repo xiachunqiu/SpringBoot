@@ -157,7 +157,7 @@ $().ready(function () {
             success: function (data) {
                 layer.open({
                     type: 1,
-                    title: "修改密码",
+                    title: "Modify password",
                     skin: 'layui-layer-rim',
                     area: ['450px', '340px'],
                     content: data
@@ -170,11 +170,11 @@ $().ready(function () {
         let newPassword = $("#newPassword").val();
         let newPasswordConfirm = $("#newPasswordConfirm").val();
         if (newPassword !== newPasswordConfirm) {
-            layer.msg("新密码两次输入不一致");
+            layer.msg("Two inconsistent new passwords");
             return false;
         }
-        $.post('/sysManager/changePassword', $('#mpform').serialize(), function (rtn) {
-            layer.msg(rtn.des);
+        $.post('/sysManager/changePassword', $('#modifyPasswordForm').serialize(), function (rtn) {
+            layer.msg(rtn.msg);
         });
         return false;
     });
