@@ -159,7 +159,7 @@ $().ready(function () {
                     type: 1,
                     title: "Modify password",
                     skin: 'layui-layer-rim',
-                    area: ['450px', '340px'],
+                    area: ['600px', '350px'],
                     content: data
                 });
             }
