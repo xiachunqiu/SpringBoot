@@ -59,9 +59,9 @@ public final class DateUtils {
         return days.intValue();
     }
 
-    public static long getDifferHours(Date startdate, Date enddate) {
+    public static long getDifferHours(Date startDate, Date endDate) {
         Calendar[] cal = new Calendar[2];
-        Date[] d = new Date[]{enddate, startdate};
+        Date[] d = new Date[]{endDate, startDate};
         for (int i = 0; i < cal.length; ++i) {
             cal[i] = Calendar.getInstance();
             cal[i].setTime(d[i]);

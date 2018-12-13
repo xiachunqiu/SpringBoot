@@ -23,3 +23,5 @@ spring:
     open-in-view: false
 server:
   port: 80
+logging:
+  config: classpath:config/log4j2.xml
