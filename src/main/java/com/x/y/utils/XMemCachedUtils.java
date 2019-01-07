@@ -15,7 +15,7 @@ public class XMemCachedUtils {
 
     static {
         try {
-            MemcachedClientBuilder builder = new XMemcachedClientBuilder(AddrUtil.getAddresses("127.0.0.1:11211"));
+            MemcachedClientBuilder builder = new XMemcachedClientBuilder(AddrUtil.getAddresses("123.56.45.32:11211"));
             memCachedClient = builder.build();
         } catch (Exception e) {
             log.error("init memCachedClient error", e);

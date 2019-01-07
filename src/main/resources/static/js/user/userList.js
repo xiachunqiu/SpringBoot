@@ -5,6 +5,9 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
 
     getList();
 
+    // Promise demo
+    testPromise();
+
     $("#searchFormBtn").on("click", function () {
         $("#pageNo").val(1);
         getList();
@@ -75,7 +78,7 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
                 content: $("#showDetailDiv").html()
             });
         } else if (obj.event === 'edit') { // edit
-            editUser(false);
+            addOrEditUser(false);
             $("#addUser").initForm({jsonValue: data});
             renderAll();
         }
@@ -83,11 +86,11 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
 
     // add
     $("#addSpan").on("click", function () {
-        editUser(true);
+        addOrEditUser(true);
         renderAll();
     });
 
-    function editUser(isAdd) {
+    function addOrEditUser(isAdd) {
         $.ajax({
             type: "get",
             url: '/page/auth/user/addOrEditUser.html',
@@ -127,3 +130,31 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
         });
     }
 });
+
+function testPromise() {
+    asyncLoadA().then(function (r) {
+        return loadB(r);
+    }).then(function (r) {
+        console.log(r);
+    }).catch(function (e) {
+        console.log(e);
+    });
+}
+
+function asyncLoadA() {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            if (Math.random() > 0.5) { // 模拟成功
+                resolve("a");
+            } else { // 模拟异常
+                reject("fail");
+            }
+        }, 2000);
+    });
+}
+
+function loadB(r) {
+    return new Promise(function (resolve) {
+        resolve(r + "b");
+    });
+}

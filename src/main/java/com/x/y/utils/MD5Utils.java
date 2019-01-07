@@ -9,7 +9,7 @@ public class MD5Utils {
     public static String encryptByMD5(String str) {
         if (StringUtils.isNotNull(str)) {
             str += "fauingh";
-            str = DigestUtils.md5Hex(str) + DigestUtils.shaHex(str).substring(30);
+            str = DigestUtils.md5Hex(str) + DigestUtils.sha512Hex(str).substring(120);
         }
         return str;
     }
