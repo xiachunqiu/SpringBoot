@@ -1,6 +1,6 @@
 package com.x.y.service;
 
-import com.x.y.domain.User;
+import com.x.y.entity.User;
 import com.x.y.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

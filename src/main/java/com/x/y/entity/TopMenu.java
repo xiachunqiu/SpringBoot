@@ -1,9 +1,10 @@
-package com.x.y.domain;
+package com.x.y.entity;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class TopMenu implements Serializable {
      * 排序ID ，越小越在最前
      */
     private Integer orderId;
+    private Date createdTime;
+    private Date modifiedTime;
+    private Boolean deletedFlag = false;
     @Transient
     private String sqlString;
     /**

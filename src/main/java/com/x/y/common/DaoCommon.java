@@ -1,8 +1,8 @@
 
 package com.x.y.common;
 
-import com.x.y.dto.Pager;
-import com.x.y.utils.StringUtils;
+import com.x.y.dto.PagerDTO;
+import com.x.y.util.StringUtil;
 
 import javax.persistence.Query;
 
@@ -61,7 +61,7 @@ public final class DaoCommon {
     }
 
     private static String replaceDOT(String string) {
-        return StringUtils.replace(string, ".", "DOT");
+        return StringUtil.replace(string, ".", "DOT");
     }
 
     private static void packageRelevanceClassForStringSearch(StringBuffer queryBuffer, Object object, String className) {
@@ -70,7 +70,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
+                String pfildName = StringUtil.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -102,7 +102,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
+                String pfildName = StringUtil.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -134,7 +134,7 @@ public final class DaoCommon {
             Class<?> srClass = object.getClass();
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
-                String pfildName = StringUtils.isNull(className) ? field.getName() : className + "." + field.getName();
+                String pfildName = StringUtil.isNull(className) ? field.getName() : className + "." + field.getName();
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -163,7 +163,7 @@ public final class DaoCommon {
             Field[] fields = srClass.getDeclaredFields();
             for (Field field : fields) {
                 String fieldName = field.getName();
-                String pfildName = StringUtils.isNull(className) ? fieldName : className + "." + fieldName;
+                String pfildName = StringUtil.isNull(className) ? fieldName : className + "." + fieldName;
                 field.setAccessible(true);
                 Class<?> clss = field.getType();
                 if (judgeField(field, object)) {
@@ -206,7 +206,7 @@ public final class DaoCommon {
     private static void setQueryBuffer2(StringBuffer queryBuffer, String value, Object fieldValue) {
         if (fieldValue != null) {
             if (fieldValue instanceof String) {
-                if (StringUtils.isNotNull((String) fieldValue)) {
+                if (StringUtil.isNotNull((String) fieldValue)) {
                     queryBuffer.append(" ").append(value.trim()).append(" ");
                 }
             } else {
@@ -217,7 +217,7 @@ public final class DaoCommon {
 
     private static void setQueryValue(Query query, Object param, String key, Object value) {
         if (param instanceof String) {
-            if (StringUtils.isNotNull((String) param) && value != null) {
+            if (StringUtil.isNotNull((String) param) && value != null) {
                 query.setParameter(key, value);
             }
         } else if (param != null && value != null) {
@@ -225,10 +225,10 @@ public final class DaoCommon {
         }
     }
 
-    public static void setQueryPager(Query query, Pager pager) throws DataAccessException {
-        if (pager != null) {
-            query.setFirstResult(pager.getStartPos());
-            query.setMaxResults(pager.getPageSize());
+    public static void setQueryPager(Query query, PagerDTO pagerDTO) throws DataAccessException {
+        if (pagerDTO != null) {
+            query.setFirstResult(pagerDTO.getStartPos());
+            query.setMaxResults(pagerDTO.getPageSize());
         }
     }
 }

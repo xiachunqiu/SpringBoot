@@ -1,9 +1,10 @@
-package com.x.y.domain;
+package com.x.y.entity;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class LeftMenu implements Serializable {
      */
     private Integer orderId;
     private Boolean isPage;
+    private Date createdTime;
+    private Date modifiedTime;
+    private Boolean deletedFlag = false;
     /**
      * 该菜单的子列表用于传值到前台
      */

@@ -1,6 +1,6 @@
 package com.x.y.service;
 
-import com.x.y.dto.Pager;
+import com.x.y.dto.PagerDTO;
 import com.x.y.repository.CommonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,55 +17,55 @@ public class CommonService {
         this.commonRepository = commonRepository;
     }
 
-    public void add(Object entity) {
-        commonRepository.add(entity);
+    public void insert(Object entity) {
+        commonRepository.insert(entity);
     }
 
-    public void merge(Object entity) {
-        commonRepository.merge(entity);
+    public void update(Object entity) {
+        commonRepository.update(entity);
     }
 
     public void delete(Object entity) {
         commonRepository.delete(entity);
     }
 
-    public <T> T findById(Serializable id, Class<T> objectClass) {
-        return commonRepository.findById(id, objectClass);
+    public <T> T getEntityById(Serializable id, Class<T> objectClass) {
+        return commonRepository.getEntityById(id, objectClass);
     }
 
-    public <T> T findByUniqueKey(Class<T> objectClass, String fieldName, String fieldValue) {
-        return commonRepository.findByUniqueKey(objectClass, fieldName, fieldValue);
+    public <T> T getEntityByUniqueKey(Class<T> objectClass, String fieldName, String fieldValue) {
+        return commonRepository.getEntityByUniqueKey(objectClass, fieldName, fieldValue);
     }
 
-    public <T> List<T> findListByObj(Object object, Pager pager) {
-        return commonRepository.findListByObj(object, pager, null);
+    public <T> List<T> getEntityList(Object object, PagerDTO pagerDTO) {
+        return commonRepository.getEntityList(object, pagerDTO, null);
     }
 
-    public <T> List<T> findListByObj(Object object, Pager pager, String sqlString) {
-        return commonRepository.findListByObj(object, pager, sqlString);
+    public <T> List<T> getEntityList(Object object, PagerDTO pagerDTO, String sqlString) {
+        return commonRepository.getEntityList(object, pagerDTO, sqlString);
     }
 
-    public Integer findCountByObj(Object object) {
-        return commonRepository.findCountByObj(object, null);
+    public Integer getEntityCount(Object object) {
+        return commonRepository.getEntityCount(object, null);
     }
 
-    public Integer findCountByObj(Object object, String sqlString) {
-        return commonRepository.findCountByObj(object, sqlString);
+    public Integer getEntityCount(Object object, String sqlString) {
+        return commonRepository.getEntityCount(object, sqlString);
     }
 
-    public <T> List<T> findListForSearch(Object object, Pager pager) {
-        return commonRepository.findListForSearch(object, pager, null);
+    public <T> List<T> getEntityListForSearch(Object object, PagerDTO pagerDTO) {
+        return commonRepository.getEntityListForSearch(object, pagerDTO, null);
     }
 
-    public <T> List<T> findListForSearch(Object object, Pager pager, String sqlString) {
-        return commonRepository.findListForSearch(object, pager, sqlString);
+    public <T> List<T> getEntityListForSearch(Object object, PagerDTO pagerDTO, String sqlString) {
+        return commonRepository.getEntityListForSearch(object, pagerDTO, sqlString);
     }
 
-    public Integer findCountForSearch(Object object) {
-        return commonRepository.findCountForSearch(object, null);
+    public Integer getEntityCountForSearch(Object object) {
+        return commonRepository.getEntityCountForSearch(object, null);
     }
 
-    public Integer findCountForSearch(Object object, String sqlString) {
-        return commonRepository.findCountForSearch(object, sqlString);
+    public Integer getEntityCountForSearch(Object object, String sqlString) {
+        return commonRepository.getEntityCountForSearch(object, sqlString);
     }
 }

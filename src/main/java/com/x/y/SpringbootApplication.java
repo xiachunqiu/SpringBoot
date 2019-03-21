@@ -18,7 +18,7 @@ import java.io.IOException;
 @SpringBootApplication
 @EnableTransactionManagement
 @ImportResource({"classpath:config/transactional.xml"})
-@EntityScan({"com.x.y.domain"})
+@EntityScan({"com.x.y.entity"})
 @RestController
 @Log4j2
 public class SpringbootApplication extends SpringBootServletInitializer {

@@ -1,12 +1,12 @@
-package com.x.y.utils;
+package com.x.y.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 
-public final class StringUtils {
-    private StringUtils() {
+public final class StringUtil {
+    private StringUtil() {
     }
 
     public static String chop(String originalString, int length, String chopString) {
@@ -137,8 +137,8 @@ public final class StringUtils {
         if (decideIP(ip)) {
             ip = request.getRemoteAddr();
         }
-        if (StringUtils.isNotNull(ip) && ip.contains(",")) {
-            ip = StringUtils.split(ip, ",")[0].replace(" ", "");
+        if (StringUtil.isNotNull(ip) && ip.contains(",")) {
+            ip = StringUtil.split(ip, ",")[0].replace(" ", "");
         }
         return ip;
     }

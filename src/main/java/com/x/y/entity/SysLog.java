@@ -1,4 +1,4 @@
-package com.x.y.domain;
+package com.x.y.entity;
 
 import lombok.Data;
 
@@ -28,10 +28,6 @@ public class SysLog implements Serializable {
      */
     private String userName;
     /**
-     * 日志记录日期
-     */
-    private Date addDate;
-    /**
      * 请求的完整URL及所有的参数内容
      */
     private String content;
@@ -40,4 +36,7 @@ public class SysLog implements Serializable {
      */
     private String ip;
     private String uri;
+    private Date createdTime;
+    private Date modifiedTime;
+    private Boolean deletedFlag = false;
 }

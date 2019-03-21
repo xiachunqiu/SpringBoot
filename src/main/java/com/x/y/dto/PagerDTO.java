@@ -6,13 +6,13 @@ import org.springframework.util.Assert;
 import java.io.Serializable;
 
 @Data
-public class Pager implements Serializable {
+public class PagerDTO implements Serializable {
     private int pageCount;
     private int pageSize;
     private int recordCount;
     private int pageNo = 1;
 
-    public Pager(int recordCount, int pageSize, int pageNo) {
+    public PagerDTO(int recordCount, int pageSize, int pageNo) {
         Assert.isTrue(pageSize > 0, "pageSize is 0");
         this.setRecordCount(recordCount);
         this.setPageSize(pageSize);

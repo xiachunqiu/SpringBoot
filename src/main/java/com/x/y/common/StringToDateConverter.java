@@ -1,6 +1,6 @@
 package com.x.y.common;
 
-import com.x.y.utils.StringUtils;
+import com.x.y.util.StringUtil;
 import lombok.Getter;
 import org.springframework.core.convert.converter.Converter;
 
@@ -29,7 +29,7 @@ public class StringToDateConverter implements Converter<String, Date> {
 
     @SuppressWarnings("NullableProblems")
     public Date convert(String dateString) {
-        if (StringUtils.isNull(dateString)) {
+        if (StringUtil.isNull(dateString)) {
             return null;
         } else {
             this.initFormat();

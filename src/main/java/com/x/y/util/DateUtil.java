@@ -1,4 +1,4 @@
-package com.x.y.utils;
+package com.x.y.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,8 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public final class DateUtils {
-    private DateUtils() {
+public final class DateUtil {
+    private DateUtil() {
     }
 
     public static Date getNextDay(Date date) {

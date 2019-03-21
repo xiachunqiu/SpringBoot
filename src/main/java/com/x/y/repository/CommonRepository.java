@@ -1,8 +1,8 @@
 package com.x.y.repository;
 
 import com.x.y.common.DaoCommon;
-import com.x.y.dto.Pager;
-import com.x.y.utils.StringUtils;
+import com.x.y.dto.PagerDTO;
+import com.x.y.util.StringUtil;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,11 +16,11 @@ public class CommonRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void add(Object entity) {
+    public void insert(Object entity) {
         entityManager.persist(entity);
     }
 
-    public void merge(Object entity) {
+    public void update(Object entity) {
         entityManager.merge(entity);
     }
 
@@ -28,34 +28,34 @@ public class CommonRepository {
         entityManager.remove(entity);
     }
 
-    public <T> T findById(Serializable id, Class<T> objectClass) {
+    public <T> T getEntityById(Serializable id, Class<T> objectClass) {
         return entityManager.find(objectClass, id);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T findByUniqueKey(Class<T> objectClass, String fieldName, String fieldValue) {
+    public <T> T getEntityByUniqueKey(Class<T> objectClass, String fieldName, String fieldValue) {
         Query query = entityManager.createQuery("from " + objectClass.getSimpleName() + " where " + fieldName + " =:" + fieldName);
         query.setParameter(fieldName, fieldValue);
         return (T) query.getSingleResult();
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> findListByObj(Object object, Pager pager, String sqlString) {
+    public <T> List<T> getEntityList(Object object, PagerDTO pagerDTO, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
-        Query query = getFindByObjQuery(object, sqlString, queryBuffer);
-        DaoCommon.setQueryPager(query, pager);
+        Query query = getEntityQuery(object, sqlString, queryBuffer);
+        DaoCommon.setQueryPager(query, pagerDTO);
         return query.getResultList();
     }
 
-    public Integer findCountByObj(Object object, String sqlString) {
+    public Integer getEntityCount(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
-        Query query = getFindByObjQuery(object, sqlString, queryBuffer);
+        Query query = getEntityQuery(object, sqlString, queryBuffer);
         return Integer.parseInt(query.getSingleResult().toString());
     }
 
-    private Query getFindByObjQuery(Object object, String sqlString, StringBuffer queryBuffer) {
+    private Query getEntityQuery(Object object, String sqlString, StringBuffer queryBuffer) {
         DaoCommon.setQueryBufferForAccurateSearch(queryBuffer, object);
-        if (StringUtils.isNotNull(sqlString)) {
+        if (StringUtil.isNotNull(sqlString)) {
             queryBuffer.append(" ").append(sqlString);
         }
         Query query = entityManager.createQuery(queryBuffer.toString());
@@ -64,22 +64,22 @@ public class CommonRepository {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> findListForSearch(Object object, Pager pager, String sqlString) {
+    public <T> List<T> getEntityListForSearch(Object object, PagerDTO pagerDTO, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("from " + object.getClass().getName() + " where 1=1 ");
-        Query query = getFindForSearchQuery(object, sqlString, queryBuffer);
-        DaoCommon.setQueryPager(query, pager);
+        Query query = getEntityQueryForSearch(object, sqlString, queryBuffer);
+        DaoCommon.setQueryPager(query, pagerDTO);
         return query.getResultList();
     }
 
-    public Integer findCountForSearch(Object object, String sqlString) {
+    public Integer getEntityCountForSearch(Object object, String sqlString) {
         StringBuffer queryBuffer = new StringBuffer("select count(*) from " + object.getClass().getName() + " where 1=1 ");
-        Query query = getFindForSearchQuery(object, sqlString, queryBuffer);
+        Query query = getEntityQueryForSearch(object, sqlString, queryBuffer);
         return Integer.parseInt(query.getSingleResult().toString());
     }
 
-    private Query getFindForSearchQuery(Object object, String sqlString, StringBuffer queryBuffer) {
+    private Query getEntityQueryForSearch(Object object, String sqlString, StringBuffer queryBuffer) {
         DaoCommon.setQueryBufferForStringSearch(queryBuffer, object);
-        if (StringUtils.isNotNull(sqlString)) {
+        if (StringUtil.isNotNull(sqlString)) {
             queryBuffer.append(" ").append(sqlString);
         }
         Query query = entityManager.createQuery(queryBuffer.toString());

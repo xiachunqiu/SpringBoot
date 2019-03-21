@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.x.y.common.Constants;
 import com.x.y.common.ResponseCode;
 import com.x.y.config.ApplicationContextRegister;
-import com.x.y.domain.SysLog;
-import com.x.y.domain.User;
-import com.x.y.dto.ResponseData;
+import com.x.y.entity.SysLog;
+import com.x.y.entity.User;
+import com.x.y.dto.ResponseDataDTO;
 import com.x.y.service.CommonService;
-import com.x.y.utils.StringUtils;
+import com.x.y.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
@@ -41,7 +41,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             User user = (User) request.getSession().getAttribute(Constants.USER_SESSION_KEY);
             if (user == null) {
                 PrintWriter print = response.getWriter();
-                print.write(JSON.toJSON(ResponseData.fail("Please login", ResponseCode.not_logged_in)).toString());
+                print.write(JSON.toJSON(ResponseDataDTO.fail("Please login", ResponseCode.not_logged_in)).toString());
                 return false;
             }
             request.setAttribute("user", user);
@@ -67,15 +67,15 @@ public class AuthInterceptor implements HandlerInterceptor {
     private void saveLog(HttpServletRequest request, User user, String uri) {
         try {
             SysLog sysLog = new SysLog();
-            sysLog.setAddDate(new Date());
-            sysLog.setUri(StringUtils.isNotNull(uri) ? uri : null);
-            sysLog.setIp(StringUtils.getIpAddress(request));
+            sysLog.setCreatedTime(new Date());
+            sysLog.setUri(StringUtil.isNotNull(uri) ? uri : null);
+            sysLog.setIp(StringUtil.getIpAddress(request));
             sysLog.setUserId(user.getId().toString());
             sysLog.setUserName(user.getUserName());
             sysLog.setContent(logRequestParameter(request));
-            commonService.add(sysLog);
+            commonService.insert(sysLog);
         } catch (Exception e) {
-            log.error("save log error", e);
+            log.error("insert log error", e);
         }
     }
 
@@ -86,10 +86,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         for (Object key : map.keySet()) {
             String name = key.toString();
             String value = request.getParameter(name);
-            if (StringUtils.isNotNull(value) && value.length() > 5120) {
+            if (StringUtil.isNotNull(value) && value.length() > 5120) {
                 continue;
             }
-            if (StringUtils.isNull(value) || "_".equalsIgnoreCase(key.toString())) {
+            if (StringUtil.isNull(value) || "_".equalsIgnoreCase(key.toString())) {
                 continue;
             }
             sb.append(name).append("=").append(value).append("&");

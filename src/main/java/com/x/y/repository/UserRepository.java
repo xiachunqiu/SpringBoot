@@ -1,6 +1,6 @@
 package com.x.y.repository;
 
-import com.x.y.domain.User;
+import com.x.y.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

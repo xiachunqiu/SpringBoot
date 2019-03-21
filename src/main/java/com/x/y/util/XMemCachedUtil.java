@@ -1,4 +1,4 @@
-package com.x.y.utils;
+package com.x.y.util;
 
 import lombok.extern.log4j.Log4j2;
 import net.rubyeye.xmemcached.MemcachedClient;
@@ -7,10 +7,10 @@ import net.rubyeye.xmemcached.XMemcachedClientBuilder;
 import net.rubyeye.xmemcached.utils.AddrUtil;
 
 @Log4j2
-public class XMemCachedUtils {
+public class XMemCachedUtil {
     private static MemcachedClient memCachedClient = null;
 
-    private XMemCachedUtils() {
+    private XMemCachedUtil() {
     }
 
     static {

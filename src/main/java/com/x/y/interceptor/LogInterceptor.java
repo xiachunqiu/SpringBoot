@@ -3,7 +3,7 @@ package com.x.y.interceptor;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.x.y.utils.StringUtils;
+import com.x.y.util.StringUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +37,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        String key = StringUtils.getIpAddress(request) + "-" + request.getRequestURI();
+        String key = StringUtil.getIpAddress(request) + "-" + request.getRequestURI();
         long count = counter.get(key).incrementAndGet();
         if (count > PERMIT) {
             log.error("key is :" + key + ". The frequency of access is too fast in a minute. The count is : " + count);
@@ -82,12 +82,12 @@ public class LogInterceptor implements HandlerInterceptor {
         for (Object key : map.keySet()) {
             String name = key.toString();
             String value = request.getParameter(name);
-            if (StringUtils.isNotNull(value) && value.length() > MAX_LOG_LENGTH) {
+            if (StringUtil.isNotNull(value) && value.length() > MAX_LOG_LENGTH) {
                 continue;
             }
             sb.append(name).append("=").append(value).append("&");
         }
-        sb.append("  ").append(StringUtils.getIpAddress(request));
+        sb.append("  ").append(StringUtil.getIpAddress(request));
         String url = getScheme(request) + "://" + request.getHeader("host") + request.getRequestURI();
         return url + sb.toString();
     }

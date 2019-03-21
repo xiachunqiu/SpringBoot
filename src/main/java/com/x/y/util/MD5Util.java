@@ -1,13 +1,13 @@
-package com.x.y.utils;
+package com.x.y.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class MD5Utils {
-    private MD5Utils() {
+public class MD5Util {
+    private MD5Util() {
     }
 
     public static String encryptByMD5(String str) {
-        if (StringUtils.isNotNull(str)) {
+        if (StringUtil.isNotNull(str)) {
             str += "fauingh";
             str = DigestUtils.md5Hex(str) + DigestUtils.sha512Hex(str).substring(120);
         }
