@@ -20,7 +20,7 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
     });
 
     function getList() {
-        $.get('/hello/getUserList', $('#searchForm').serialize(), function (rtn) {
+        $.get('/user/getUserList', $('#searchForm').serialize(), function (rtn) {
             table.render({
                 id: "dataListTable",
                 elem: '#dataList',
@@ -106,7 +106,7 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
                     skin: 'layui-layer-molv',
                     btn: ['save'],
                     yes: function (index) {
-                        let url = isAdd ? '/hello/addUser' : '/hello/updateUser';
+                        let url = isAdd ? '/user/addUser' : '/user/updateUser';
                         $.post(url, $('#addForm').serialize(), function (rtn) {
                             if (rtn.success) {
                                 layer.close(index);

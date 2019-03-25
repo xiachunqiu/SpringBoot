@@ -22,7 +22,7 @@
     </tx:advice>
     <aop:config>
         <aop:pointcut id="allManagerMethod"
-                      expression="execution(* com.x.y.service.*.*(..))||execution(* com.x.y.repository.*.*(..))"/>
+                      expression="execution(* pers.xiachunqiu.obsidian.service.*.*(..))||execution(* pers.xiachunqiu.obsidian.repository.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" order="0"/>
     </aop:config>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
