@@ -2,76 +2,69 @@ layui.use(['element', 'jquery', 'layer', 'form'], function () {
     let layer = layui.layer;
     let $ = layui.jquery;
     let clientId = createUUID();
+    let verificationFlag = false;
     $().ready(function () {
-        initLoginCode();
-
-        function initLoginCode() {
-            $.ajax({
-                url: "/index/gtRegister",
-                type: "get",
-                dataType: "json",
-                data: {
-                    "client-Id": clientId
-                },
-                success: function (data) {
-                    initGeetest({
-                        gt: data.gt,
-                        challenge: data.challenge,
-                        offline: !data.success,
-                        new_captcha: true,
-                        https: true
-                    }, handler);
-                }
+        let $submitBtn = $('#submitBtn');
+        new Promise(function (resolve) {
+            $.post('/index/verificationRegister', {"clientId": clientId}, function (rtn) {
+                resolve(rtn.code === "200");
             });
-        }
-
-        function handler(captchaObj) {
-            let $submitBtn = $('#submitBtn');
-            $submitBtn.on("click", function () {
-                let userName = $('#userName').val();
-                let password = $('#password').val();
-                if (userName === '') {
-                    layer.msg("Please input a user name");
-                    return false;
-                }
-                if (password === '') {
-                    layer.msg("Please input a password");
-                    return false;
-                }
-                let result = captchaObj.getValidate();
-                if (!result) {
-                    layer.msg('Please complete validation first');
-                    return false;
-                }
-                let index = layer.load(2, {time: 10 * 1000});
-                $submitBtn.attr("disabled", true);
-                let data = {
-                    "geetest_challenge": result.geetest_challenge,
-                    "geetest_validate": result.geetest_validate,
-                    "geetest_seccode": result.geetest_seccode,
-                    "client-Id": clientId,
-                    "user-Id": userName,
-                    "userName": userName,
-                    "password": password
-                };
-                $.post('/index/login', data, function (rtn) {
-                    layer.msg(rtn.msg);
-                    if (rtn.success) {
-                        sessionStorage.setItem("user", JSON.stringify(rtn.data));
-                        window.location = "/page/index.html";
+        }).then(function (r) {
+            if (r === true) {
+                let SlideVerifyPlug = window.slideVerifyPlug;
+                let slideVerify = new SlideVerifyPlug('#verifyWrap', {
+                    wrapWidth: '270',
+                    getSuccessState: function () {
+                        verificationFlag = slideVerify.slideFinishState;
+                        $.post('/index/verificationRegister', {"clientId": clientId}, function (rtn) {
+                            if (rtn.code === "200") {
+                                $submitBtn.attr("disabled", false);
+                                $submitBtn.css({'background-color': '#EF4300'});
+                                $submitBtn.css({'border-color': '#FF730E'});
+                            }
+                        });
                     }
                 });
-                layer.close(index);
-                $submitBtn.html("Sign in");
-                $submitBtn.attr("disabled", false);
+            } else {
+                layer.msg("The network is busy, please refresh and try again");
+            }
+        });
+        $submitBtn.on("click", function () {
+            if (!verificationFlag) {
+                layer.msg("Please complete verification");
                 return false;
+            }
+            let userName = $('#userName').val();
+            let password = $('#password').val();
+            if (userName === '') {
+                layer.msg("Please input a user name");
+                return false;
+            }
+            if (password === '') {
+                layer.msg("Please input a password");
+                return false;
+            }
+            let index = layer.load(2, {time: 10 * 1000});
+            $submitBtn.attr("disabled", true);
+            let data = {
+                "clientId": clientId,
+                "userName": userName,
+                "password": password
+            };
+            $.post('/index/login', data, function (rtn) {
+                layer.msg(rtn.msg);
+                if (rtn.code === "200") {
+                    sessionStorage.setItem("user", JSON.stringify(rtn.data));
+                    window.location = "/page/index.html";
+                }
             });
-            captchaObj.appendTo("#captcha");
-            captchaObj.onReady(function () {
-                $("#wait").hide();
-            });
-        }
-    });
+            layer.close(index);
+            $submitBtn.html("Sign in");
+            $submitBtn.attr("disabled", false);
+            return false;
+        });
+    })
+    ;
 });
 
 function createUUID() {

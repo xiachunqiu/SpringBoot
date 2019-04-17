@@ -5,9 +5,6 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
 
     getList();
 
-    // Promise demo
-    testPromise();
-
     $("#searchFormBtn").on("click", function () {
         $("#pageNo").val(1);
         getList();
@@ -37,14 +34,14 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
                 even: true,
                 page: false
             });
-            /** @namespace rtn.pager.recordCount */
-            /** @namespace rtn.pager.pageSize */
-            /** @namespace rtn.pager */
+            /** @namespace rtn.pagerDTO.recordCount */
+            /** @namespace rtn.pagerDTO.pageSize */
+            /** @namespace rtn.pagerDTO.pageNo */
             laypage.render({
                 elem: 'pager',
-                count: rtn.data.pager.recordCount,
-                limit: rtn.data.pager.pageSize,
-                curr: rtn.data.pager.pageNo,
+                count: rtn.data.pagerDTO.recordCount,
+                limit: rtn.data.pagerDTO.pageSize,
+                curr: rtn.data.pagerDTO.pageNo,
                 prev: 'prev',
                 next: 'next',
                 jump: function (obj, first) {
@@ -130,31 +127,3 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
         });
     }
 });
-
-function testPromise() {
-    asyncLoadA().then(function (r) {
-        return loadB(r);
-    }).then(function (r) {
-        console.log(r);
-    }).catch(function (e) {
-        console.log(e);
-    });
-}
-
-function asyncLoadA() {
-    return new Promise(function (resolve, reject) {
-        setTimeout(function () {
-            if (Math.random() > 0.5) { // 模拟成功
-                resolve("a");
-            } else { // 模拟异常
-                reject("fail");
-            }
-        }, 2000);
-    });
-}
-
-function loadB(r) {
-    return new Promise(function (resolve) {
-        resolve(r + "b");
-    });
-}

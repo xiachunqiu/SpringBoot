@@ -13,7 +13,7 @@ $().ready(function () {
             url: "/sysManager/getTopMenus",
             data: null,
             success: function (rtn) {
-                if (rtn.success) {
+                if (rtn.code === "200") {
                     $.each(rtn.data, function (i, n) {
                         if (isEmpty(n.childList)) {
                             /** @namespace n.iconType */
@@ -71,7 +71,7 @@ $().ready(function () {
             url: "/sysManager/getLeftMenus",
             data: {topMenuId: topMenuId},
             success: function (rtn) {
-                if (rtn.success) {
+                if (rtn.code === "200") {
                     let $leftMenuMiddle = $("#leftMenuMiddle");
                     $leftMenuMiddle.empty();
                     let firstMenuId = "";

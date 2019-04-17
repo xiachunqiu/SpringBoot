@@ -1,6 +1,5 @@
 package pers.xiachunqiu.obsidian.util;
 
-import pers.xiachunqiu.obsidian.enums.CacheTime;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class MD5Util {
@@ -16,7 +15,6 @@ public class MD5Util {
     }
 
     public static void main(String[] args) {
-        System.out.println(CacheTime.COMMON_CACHE_TIME);
-        System.out.println(CacheTime.COMMON_CACHE_TIME.name());
+        System.out.println(encryptByMD5("000000"));
     }
 }
