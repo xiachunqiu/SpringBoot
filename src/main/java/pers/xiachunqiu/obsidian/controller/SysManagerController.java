@@ -39,7 +39,6 @@ public class SysManagerController extends BaseController {
             list.forEach(t -> {
                 if (t.getParentId() == null) {
                     topNavList.add(t);
-
                 }
             });
             List<TopMenuDTO> topMenuDTOList = Lists.newArrayList();

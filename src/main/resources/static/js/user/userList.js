@@ -61,6 +61,7 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
         if (obj.event === 'detail') { // detail
             let $showDetailTable = $("#showDetailTable");
             /** @namespace data.addDateStr */
+            /** @namespace data.sex */
             $showDetailTable.empty()
                 .append("<tr><td width='80'>ID</td><td width='150'>" + data.id + "</td></tr>")
                 .append("<tr><td width='80'>user name</td><td width='150'>" + data.userName + "</td></tr>")
