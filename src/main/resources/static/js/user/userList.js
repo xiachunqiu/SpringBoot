@@ -84,8 +84,9 @@ layui.use(['element', 'jquery', 'layer', 'laypage', 'table'], function () {
 
     // add
     $("#addSpan").on("click", function () {
-        addOrEditUser(true);
-        renderAll();
+        // addOrEditUser(true);
+        // renderAll();
+        $("#paypal_form").submit();
     });
 
     function addOrEditUser(isAdd) {

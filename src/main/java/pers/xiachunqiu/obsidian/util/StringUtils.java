@@ -188,4 +188,17 @@ public final class StringUtils {
             return sb.toString();
         }
     }
+
+    public static boolean endsWith(String str, String suffix) {
+        if (str != null && suffix != null) {
+            if (suffix.length() > str.length()) {
+                return false;
+            } else {
+                int strOffset = str.length() - suffix.length();
+                return str.regionMatches(false, strOffset, suffix, 0, suffix.length());
+            }
+        } else {
+            return str == null && suffix == null;
+        }
+    }
 }

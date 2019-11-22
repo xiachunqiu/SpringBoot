@@ -35,6 +35,16 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-mail</artifactId>
+            <version>3.6.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.4</version>

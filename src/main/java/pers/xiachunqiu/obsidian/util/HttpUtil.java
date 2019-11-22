@@ -1,7 +1,9 @@
 package pers.xiachunqiu.obsidian.util;
 
+import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import org.apache.catalina.manager.Constants;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.*;
 import org.apache.http.client.config.RequestConfig;
@@ -21,6 +23,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +83,7 @@ public class HttpUtil {
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, Consts.UTF_8));
             }
             httpPost.setConfig(getCommonRequestConfig());
+            httpPost.addHeader("Authorization", getHeader());
             CloseableHttpClient client = initClient(path);
             CloseableHttpResponse response = client.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
@@ -123,5 +127,21 @@ public class HttpUtil {
             }
         });
         return HttpClients.custom().setSSLSocketFactory(sslsf).build();
+    }
+
+    private static String getHeader() {
+        String APP_KEY = "AaQqNsq6SY1iKv2i0-H2gUiPhYfo9bgTp-PhicFEiw0wXLwiz56zJUzSlQX3GV4c3i4FwF_dxqjh8SwZ";
+        String SECRET_KEY = "EJNfqjamaIsSDScM04zwsyClqf1OZldMsrI2SW6Xl5sYE9fdZEgmPteJrJYW8MiNRJklqy2f33Yn7CHt";
+        String auth = APP_KEY + ":" + SECRET_KEY;
+        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
+        return "Basic " + new String(encodedAuth);
+    }
+
+    public static void main(String[] args) {
+        String path = "https://api.sandbox.paypal.com/v1/oauth2/token";
+        Map<String, String> map = Maps.newHashMap();
+        map.put("grant_type", "client_credentials");
+        String result = postService(path, map);
+        System.out.println(result);
     }
 }

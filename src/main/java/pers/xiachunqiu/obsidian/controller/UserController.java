@@ -75,4 +75,9 @@ public class UserController extends BaseController {
         }
         return ResponseDataDTO.success();
     }
+
+    @RequestMapping(value = "paypalNotify", method = RequestMethod.POST)
+    public void paypalNotify() {
+        System.out.println("paypal...ok");
+    }
 }
