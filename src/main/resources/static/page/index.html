@@ -1,33 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>CRM</title>
-    <link rel="stylesheet" href="/static/js/layui/css/layui.css"/>
-    <style type="text/css">
-        .layui-layout-admin .layui-body {
-            top: 60px;
-            bottom: 0;
-        }
+<html>
+<meta charset="utf-8">
+<head></head>
+<body>
+<script>window.onload = function dat() {
+    document.getElementById("date").value = new Date().toJSON().slice(0, 10);
+    document.getElementById("la").value = localStorage.ala || "2/3【KOF】";
+};
 
-        .layui-form-select dl {
-            position: static;
+function bb(str) {
+    var b = 0;
+    for (var i = 0; i < str.length; i++) {
+        var c = str.charCodeAt(i);
+        if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+            b++;
+        } else {
+            b += 2;
         }
-    </style>
-</head>
-<body class="layui-layout-body" id="body">
-<div class="layui-layout layui-layout-admin">
-    <div id="header"></div>
-    <div id="middle-left"></div>
-    <div class="layui-body" id="layui-body"></div>
-    <div id="footer"></div>
-</div>
-<script src='/static/js/jquery-1.8.2.min.js'></script>
-<script src="/static/js/alpaca-spa-2.1.js.js"></script>
-<script src="/static/js/layui/layui.all.js"></script>
-<script src="/static/js/common.js"></script>
-<script src="/static/js/auth.index.js"></script>
-<script src="/static/js/index.js"></script>
+    }
+    var a = "";
+    for (var i = 12 - b; i > 0; i--) {
+        a += "&nbsp;"
+    }
+    return a
+}
+
+function ra(dad) {
+    for (var j, x, i = dad.length; i; j = parseInt(Math.random() * i), x = dad[--i], dad[i] = dad[j], dad[j] = x) ;
+    return dad;
+}
+
+function sub() {
+    var buttons = document.getElementsByTagName('button');
+    for (var a = 0; a < buttons.length; a++) {
+        buttons[a].onclick = function () {
+            sub2();
+        }
+    }
+    var tx2 = "";
+    var txt = "GP队内赛<br>" + "时间： " + document.getElementById("date").value + "<br>规则： "
+        + document.getElementById("la").value + "<br>地点：" + document.getElementById("lb").value + "<br>--------第一轮--------<br>";
+    tx2 += "寒眸" + bb("寒眸") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "物质" + '<br>';
+    tx2 += "青丝" + bb("青丝") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "半个" + '<br>';
+    tx2 += "西瓜" + bb("西瓜") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "罗曼" + '<br>';
+    tx2 += "娃娃" + bb("娃娃") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "钥匙" + '<br>';
+    tx2 += "学弟" + bb("学弟") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "夜斗" + '<br>';
+    tx2 += "守序" + bb("守序") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "相辰" + '<br>';
+    tx2 += "炼狱" + bb("炼狱") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "龙神" + '<br>';
+    document.getElementById("mes").innerHTML = txt + tx2 + "--------第二轮--------";
+    localStorage.ala = document.getElementById("la").value;
+}
+
+function sub2() {
+    var tx2 = "";
+    var txt = "GP队内赛<br>" + "时间： " + document.getElementById("date").value + "<br>规则： "
+        + document.getElementById("la").value + "<br>地点：" + document.getElementById("lb").value + "<br>--------第一轮--------<br>";
+    var member = document.getElementById("l3").value;
+    if (member.split(' ').length % 2 === 1) {
+        member += " 轮空";
+    }
+    var a1 = ra(member.split(' '));
+    var ly_flag = false;
+    var hm_flag = false;
+    var map = new Map();
+    var index = 0;
+    for (var i = 0; i < a1.length; i++) {
+        if (a1[i] === "炼狱") {
+            ly_flag = true;
+        } else if (a1[i] === "寒眸") {
+            hm_flag = true;
+        } else {
+            map.set(index, a1[i]);
+            index++;
+        }
+    }
+    var n = parseInt((Math.random() * (map.size / 2)).toString());
+    var m = parseInt((Math.random() * 2).toString());
+    for (var j = 0; j < map.size; j++) {
+        if (ly_flag && hm_flag && (j === n || j + 1 === n)) {
+            if (m === 0) {
+                tx2 += "炼狱" + bb("炼狱") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "寒眸" + '<br>';
+            } else {
+                tx2 += "寒眸" + bb("寒眸") + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "炼狱" + '<br>';
+            }
+        }
+        tx2 += map.get(j) + bb(map.get(j)) + "0:0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + map.get(j + 1) + '<br>';
+        j++;
+    }
+    document.getElementById("mes").innerHTML = txt + tx2 + "--------第二轮--------";
+    localStorage.ala = document.getElementById("la").value;
+}
+</script>
+<form>
+    <p>输入日期：<input id="date" type="date"/></p>
+    <p>比赛规则：<input id="la" type="text" size="20"/></p>
+    <p>比赛地点：<input id="lb" type="text" size="20"/></p>
+    <p>队内赛成员：<input id="l3" type="text" size="50" placeholder="成员请用空白符分隔开"></p>
+    <p>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+        <br>
+        <button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button><button type="button" onclick="sub()">飞机我日你</button>
+    </p>
+    <div id="mes"/>
+</form>
 </body>
 </html>

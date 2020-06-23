@@ -1,21 +1,423 @@
-<div class="layui-header">
-    <div class="layui-logo">CRM</div>
-    <ul id="topMenuHeader" lay-filter="topMenuHeader"></ul>
-    <ul class="layui-nav layui-layout-right">
-        <li class="layui-nav-item">
-            <a href="javascript:void(0);">
-                <i class="layui-icon">&#xe612;</i>
-                <span id="userInfo"></span>
-            </a>
-            <dl class="layui-nav-child">
-                <dd><a id="modifyPassword"><i class="layui-icon">&#xe642;</i>edit password</a></dd>
-            </dl>
-        </li>
-        <li class="layui-nav-item">
-            <a href="javascript:logout()" class="signOut">
-                <i class="layui-icon">&#xe65c;</i>logout
-            </a>
-        </li>
+<!DOCTYPE html>
+<html lang="{lang->lang}">
+<head>
+    <!--% TITLE = {localize(page,campus,report,study_report,title,学習時間)} %-->
+    <!--% INCLUDE /m/inc/head.inc %-->
+</head>
+<script type="text/javascript" src="{uri->rel_static_base:raw}/js/qqe/common/echarts.min.js"></script>
+<body class="page-mypage-top">
+<!--header-->
+<!--% INCLUDE /m/inc/header.inc %-->
+<!--% can_view_site_data = {study_time_info->can_view_site_data} %-->
+<!--% can_view_area_data = {study_time_info->can_view_area_data} %-->
+<!--% can_view_comparison_data = {study_time_info->can_view_comparison_data } %-->
+<!--% target = {params->target} %-->
+
+<h1 class="heading"><& page.campus_report_study_report.title & 月間平均学習時間 &></h1>
+<!--% IF {can_view_site_data} %-->
+<!--% IF {can_view_area_data} %-->
+<div class="single searchbox p10 tab_wrapper tab-group2">
+    <ul class="tabs">
+        <li class="country" data-target="{target:is(site):out(active)}"><a><& page.campus_report_study_report.comparison.international & 世界 &></a></li>
+        <li class="prefecture"><a><& page.campus_report_study_report.comparison.prefecture & 都道府県 &></a></li>
     </ul>
+    <div class="content content_wrapper">
+        <div class="tab_content tab_content_one">
+            <div class="box with-tabs">
+                <div class="pb0">
+                    <div class="box-inner p10 pb20">
+                        <div id="country_echarts" style="width:100%;" class="h700"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab_content tab_content_two">
+            <div class="box with-tabs">
+                <div class="pb0">
+                    <div class="box-inner p10 pb20">
+                        <div class="" style="text-align:right;">
+                            <a href="" class="w150 btn changeBtn red fill"><& page.campus_report_study_report.change.title & 都道府県を変更する &></a>
+                        </div>
+                        <div id="prefecture_echarts"  style="width:100%;" class="prefecture_echarts_style h700"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<script src="/static/js/header.js"></script>
+<!--% ELSE %-->
+<div class="searchbox border-Top">
+    <div class="content box with-tabs">
+        <div class="pb0">
+            <div class="box-inner p10 pb20">
+                <div id="country_echarts" style="width:100%" class=" h700"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--% ENDIF %-->
+<!--% ELSE %-->
+<div class="searchbox border-Top">
+    <div class="content box with-tabs">
+        <div class="pb0">
+            <div class="box-inner p10 pb20">
+                <div class="" style="text-align:right;">
+                    <a href="" class="w150 changeBtn btn red fill"><& page.campus_report_study_report.change.title & 都道府県を変更する &></a>
+                </div>
+                <div id="prefecture_echarts" style="width:100%" class="h700"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--% ENDIF %-->
+
+
+<!--footer-->
+<!--% INCLUDE /m/inc/footer.inc %-->
+<!--% INCLUDE /m/inc/foot.inc %-->
+<script type="text/javascript">
+    $(function(){
+        var echartEl = document.getElementById('country_echarts');
+        echartEl.style.width=window.innerWidth+'px';
+        var myChart = echarts.init(echartEl);
+
+        var symbolSize = [30, 20];
+        var symbolPath = '{uri->rel_static_base:raw}/images/country-flag/';
+        var chartDataArr = {site_data:json_dump:default(null)};
+        chartDataArr = chartDataArr == null ? [] : chartDataArr;
+        var site_names = [], vals = [], flags = [], icons = [], popup = [], len = chartDataArr.length, popContent = '';
+        var _rich={
+            value: {
+                lineHeight: 30,
+                align: 'center'
+            }};
+        for(var i=0; i<len; i++){
+            var chartData = chartDataArr[i];
+            site_names.push(chartData.site_name);
+            vals.push(chartData.site_average_study_time);
+            flags.push({value:chartData.site_average_study_time, symbolSize:symbolSize, symbol:symbolPath+chartData.country+'.png'});
+            _rich[chartData.site_name]=   {
+                height:20,
+                align: 'center',
+                borderColor: '#a3a3a3',
+                borderWidth: 1,
+                margin: [6, 2],
+                backgroundColor: {
+                    image: symbolPath+chartData.country+'.png'
+                }};
+            if(chartData.show_student_study_time_for_month == 1  && chartData.site_average_study_time > 0){
+                popContent = chartData.student_study_time_for_month > chartData.site_average_study_time ? '<& page.campus_report_study_report.site_contrast.high & あなたの学習時間は\n全生徒の平均を超え\nています。\nこの調子でがんばり\nましょう！ &>' : '<& page.campus_report_study_report.site_contrast.low & あなたの学習時間は\n全生徒の平均以\n下となっています。\nがんばりましょう！ &>';
+                icons.push({
+                    value:chartData.site_average_study_time,
+                })
+            }else{
+                icons.push({});
+            }
+        }
+        var option = {
+            title: {
+                text: '',
+            },
+            color: ['#3398DB'],
+            tooltip: {	// pop
+                trigger: 'item',
+                axisPointer: {
+                    type: 'shadow',        // 'line' | 'shadow'
+                }
+            },
+            xAxis: [
+                {
+                    name: '<& page.campus_report_study_report.study_time & 時間(min) &>',
+                    type: 'value',
+                    minInterval: 1,
+                    position: 'top',
+                    //interval: 1,
+                    boundaryGap: [0, '28%']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'category',
+                    show: true,
+                    data: site_names,
+                    inverse:true,
+                    name: 'Country',
+                    axisLabel: {
+                        formatter: function (value) {
+                            return '{' + value + '|}';
+                        },
+
+                        rich:_rich
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            grid:{
+                left:'13%',
+                right: '28%',
+            },
+            series: [
+                {
+                    name: '<& page.campus_report_study_report.title & 月間平均学習時間 &>',
+                    type: 'bar',
+                    barWidth: '50%',
+                    label: {
+                        show: true,
+                        color:'#fff',
+                        fontSize: 16
+
+                    },
+                    data: vals,
+                    itemStyle: {
+                        normal: {
+                            color: function(params) {
+                                let colorList = [
+                                    "#f9a453",
+                                    "#f27f62",
+                                    "#5ebcc8",
+                                    "#ba7d7c",
+                                    "#d0718f",
+                                    "#577283",
+                                    "#a3a3a3",
+                                    "#548ece",
+                                    "#fe0000",
+                                    "#018730",
+                                    "#415562"
+                                ];
+                                return colorList[params.dataIndex];
+                            },
+                            shadowColor: 'rgba(0,0,0,0.41)',
+                            shadowBlur: 9,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                        }
+                    },
+                }, {	// pop
+                    name: 'assess',
+                    type: 'bar',
+                    barGap: '0',
+                    //radius: ['40%', '55%'],
+                    markPoint: {
+                        symbolSize: 1,
+                        symbolOffset: [0, '50%'],
+                        label: {
+                            formatter: '{b|{b}}{e|'+popContent+'} ',
+                            backgroundColor: 'rgb(255,255,255)',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            padding: [6, 2],
+                            lineHeight: 22,
+                            shadowColor: 'rgba(163,163,163,0.71)',
+                            shadowBlur: 9,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                            position: 'right',
+                            distance: 10,
+                            rich: {
+                                a: {
+                                    align: 'center',
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    textShadowBlur: 2,
+                                    textShadowColor: '#000',
+                                    textShadowOffsetX: 0,
+                                    textShadowOffsetY: 1,
+                                    textBorderColor: '#333',
+                                    textBorderWidth: 2
+                                },
+                                e: {
+                                    align: 'center',
+                                    padding: [6, 2],
+                                    color: '#FA6C17',
+                                },
+                            }
+                        },
+                        data: [{type: 'max', name: ''},]
+                    },
+                    data: icons,
+                },
+            ]
+        };
+
+        myChart.setOption(option);
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        var echartEl = document.getElementById('prefecture_echarts');
+        echartEl.style.width=window.innerWidth+'px';
+        var myChart = echarts.init(echartEl);
+
+        var chartDataArr = {area_data:json_dump:default(null)};
+        chartDataArr = chartDataArr == null ? [] : chartDataArr;
+        var area_names = [], vals = [], icons = [], len = chartDataArr.length, popContent = '';
+
+        for(var i=0; i<len; i++){
+            var chartData = chartDataArr[i];
+            area_names.push(chartData.area_name);
+            vals.push(chartData.area_average_study_time);
+
+            if(chartData.show_student_study_time_for_month == 1  && chartData.area_average_study_time > 0){
+                popContent = chartData.student_study_time_for_month > chartData.area_average_study_time ? '<& page.campus_report_study_report.area_contrast.high & あなたの学習時間は\n全生徒の平均を超え\nています。\nこの調子でがんばり\nましょう！ &>' :
+                    '<& page.campus_report_study_report.area_contrast.low & あなたの学習時間は\n全生徒の平均以\n下となっています。\nがんばりましょう！ &>';
+                icons.push({
+                    value:chartData.area_average_study_time,
+                })
+            } else {
+                icons.push({});
+            }
+        }
+        var option = {
+            title: {
+                text: '',
+            },
+            color: ['#3398DB'],
+            tooltip: {	// pop
+                trigger: 'item',
+                axisPointer: {
+                    type: 'shadow',        // 'line' | 'shadow'
+                }
+            },
+            xAxis: [
+                {
+                    name: '<& page.campus_report_study_report.study_time & 時間(min) &>',
+                    type: 'value',
+                    minInterval: 1,
+                    position: 'top',
+                    //interval: 1,
+                    boundaryGap: [0, '28%']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'category',
+                    show: true,
+                    data: area_names,
+                    inverse:true,
+                    name: 'Area',
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                }
+            ],
+            grid:{
+                left:'8%',
+                right: '28%',
+            },
+            series: [
+                {
+                    name: '<& page.campus_report_study_report.title & 月間平均学習時間 &>',
+                    type: 'bar',
+                    barWidth: '50%',
+                    label: {
+                        show: true,
+                        color:'#fff',
+                        fontSize: 16
+
+                    },
+                    data: vals,
+                    itemStyle: {
+                        normal: {
+                            color: function(params) {
+                                let colorList = [
+                                    "#f9a453",
+                                    "#f27f62",
+                                    "#5ebcc8",
+                                    "#ba7d7c",
+                                    "#d0718f",
+                                    "#577283",
+                                    "#a3a3a3",
+                                    "#548ece",
+                                    "#fe0000",
+                                    "#018730",
+                                    "#415562"
+                                ];
+                                return colorList[params.dataIndex];
+                            },
+                            shadowColor: 'rgba(0,0,0,0.41)',
+                            shadowBlur: 9,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                        }
+                    },
+                }, {	// pop
+                    name: 'assess',
+                    type: 'bar',
+                    barGap: '0',
+                    //radius: ['40%', '55%'],
+                    markPoint: {
+                        symbolSize: 1,
+                        symbolOffset: [0, '50%'],
+                        label: {
+                            formatter: '{b|{b}}{e|'+popContent+'} ',
+                            backgroundColor: 'rgb(255,255,255)',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            padding: [6, 2],
+                            lineHeight: 22,
+                            shadowColor: 'rgba(163,163,163,0.71)',
+                            shadowBlur: 9,
+                            shadowOffsetX: 0,
+                            shadowOffsetY: 2,
+                            position: 'right',
+                            distance: 10,
+                            rich: {
+                                a: {
+                                    align: 'center',
+                                    color: '#fff',
+                                    fontSize: 14,
+                                    textShadowBlur: 2,
+                                    textShadowColor: '#000',
+                                    textShadowOffsetX: 0,
+                                    textShadowOffsetY: 1,
+                                    textBorderColor: '#333',
+                                    textBorderWidth: 2
+                                },
+                                e: {
+                                    align: 'center',
+                                    padding: [6, 2],
+                                    color: '#FA6C17',
+                                },
+                            }
+                        },
+                        data: [{type: 'max', name: ''},]
+                    },
+                    data: icons,
+                },
+            ]
+        };
+        myChart.setOption(option);
+
+        var $chaneBtn = $('.changeBtn');
+
+        $chaneBtn.on("click", function () {
+            $.dialog.open($.qqe.uri.rel_base() + "/dialog/student/student_extra/change", {
+                width: 450,
+                height: 400
+            }, function () {
+                $("[btn-save]").click(function() {
+                    $.progress.show();
+                    var $f = $("#dialog_f");
+                    $.post($.qqe.uri.rel_base() + "/api/student/student_extra/set_area", {
+                        crumb: $("input[name='crumb']", $f).val(),
+                        area_name: $("input[name='area_name']", $f).val(),
+                    }, function(res){
+                        if(!res.is_success) {
+                            $.progress.hide();
+                            $.qqe.alert_with_error_response(res);
+                            return;
+                        }
+                        location.reload();
+                    });
+                });
+            });
+            return false;
+        })
+    });
+</script>
+</body>
+</html>
