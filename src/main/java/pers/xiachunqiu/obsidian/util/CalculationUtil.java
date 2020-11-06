@@ -39,35 +39,35 @@ public class CalculationUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println("Outstanding individual voting score");
+        System.out.println("优秀个人得分:");
         printScore(memberList);
-        System.out.println("Excellent team voting score");
+        System.out.println("优秀团队得分:");
         printScore(teamList);
     }
 
     private static void initMemberList() {
         // init teamList
         memberList = Lists.newArrayList();
-        memberList.add(new MemberDTO().setId(1).setName("Kim").setMemberIdsOfVoting(Arrays.asList(2, 7, 4)));
-        memberList.add(new MemberDTO().setId(2).setName("Hugh").setMemberIdsOfVoting(Arrays.asList(1, 5, 3)));
+        memberList.add(new MemberDTO().setId(1).setName("Kim").setMemberIdsOfVoting(Arrays.asList(9, 4)));
+        memberList.add(new MemberDTO().setId(2).setName("Hugh").setMemberIdsOfVoting(Arrays.asList(7, 3)));
         memberList.add(new MemberDTO().setId(3).setName("Dell"));
         memberList.add(new MemberDTO().setId(4).setName("Ivor"));
-        memberList.add(new MemberDTO().setId(5).setName("Christian"));
-        memberList.add(new MemberDTO().setId(6).setName("Jo"));
-        memberList.add(new MemberDTO().setId(7).setName("Fiona").setMemberIdsOfVoting(Arrays.asList(9, 8, 6)));
+        memberList.add(new MemberDTO().setId(5).setName("Christian").setMemberIdsOfVoting(Arrays.asList(2, 10)));
+        memberList.add(new MemberDTO().setId(6).setName("Jo").setMemberIdsOfVoting(Collections.singletonList(5)));
+        memberList.add(new MemberDTO().setId(7).setName("Fiona").setMemberIdsOfVoting(Collections.singletonList(8)));
         memberList.add(new MemberDTO().setId(8).setName("Tracer"));
-        memberList.add(new MemberDTO().setId(9).setName("Leo"));
+        memberList.add(new MemberDTO().setId(9).setName("Leo").setMemberIdsOfVoting(Collections.singletonList(1)));
+        memberList.add(new MemberDTO().setId(10).setName("Jarvis").setMemberIdsOfVoting(Collections.singletonList(6)));
     }
 
     private static void initTeamList() {
         // init teamList
         teamList = Lists.newArrayList();
-        teamList.add(new TeamDTO().setName("QQE Team").setId(1).setMemberIds(Arrays.asList(1, 2, 3)).setMemberIdsOfVoting(Arrays.asList(1, 6, 5, 3, 4)));
-        teamList.add(new TeamDTO().setName("APP Team").setId(2).setMemberIds(Arrays.asList(4, 5)));
-        teamList.add(new TeamDTO().setName("Fix Team").setId(3).setMemberIds(Collections.singletonList(5)).setMemberIdsOfVoting(Arrays.asList(2, 8)));
+        teamList.add(new TeamDTO().setName("QQE Team").setId(1).setMemberIds(Arrays.asList(1, 2, 3)).setMemberIdsOfVoting(Arrays.asList(9, 3, 1)));
+        teamList.add(new TeamDTO().setName("APP Team").setId(2).setMemberIds(Arrays.asList(5, 10, 7, 4)).setMemberIdsOfVoting(Arrays.asList(5, 2, 10, 7, 4)));
+        teamList.add(new TeamDTO().setName("Product Team").setId(3).setMemberIds(Arrays.asList(8, 6)));
         teamList.add(new TeamDTO().setName("CRM Team").setId(4).setMemberIds(Arrays.asList(6, 3)));
-        teamList.add(new TeamDTO().setName("Test Team").setId(5).setMemberIds(Arrays.asList(7, 8)).setMemberIdsOfVoting(Arrays.asList(7, 6)));
-        teamList.add(new TeamDTO().setName("DevOpsTeam Team").setId(6).setMemberIds(Collections.singletonList(9)));
+        teamList.add(new TeamDTO().setName("DevOpsTeam Team").setId(5).setMemberIds(Arrays.asList(9, 2)));
     }
 
     private static List<TeamDTO> getTeamListOfMemberByMemberId(Integer memberId) {
@@ -107,7 +107,9 @@ public class CalculationUtil {
         sortList.forEach(l -> {
             Double score = l.getScore();
             if (score > 0) {
-                System.out.println(l.getName() + " : " + score);
+                int c = (score + "").length() - (score + "").indexOf(".") - 1;
+                String scoreValue = c <= 4 ? String.format("%.0f", score * 100) : String.format("%.2f", score * 100);
+                System.out.println(l.getName() + "(" + l.getMemberIdsOfVoting().size() + "票) : " + scoreValue + "分");
             }
         });
         System.out.println("---------------------------------------------------");
